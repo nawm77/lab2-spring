@@ -1,0 +1,11 @@
+version: "3"
+services:
+  cardb:
+    image: postgres:latest
+    container_name: postgres_cardb
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: cardb
