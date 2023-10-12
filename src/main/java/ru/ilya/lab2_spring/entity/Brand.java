@@ -17,6 +17,7 @@ import java.util.List;
 @Table(name = "brands")
 public class Brand {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private LocalDateTime created;

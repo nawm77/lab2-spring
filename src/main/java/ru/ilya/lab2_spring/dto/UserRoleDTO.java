@@ -9,7 +9,7 @@ import ru.ilya.lab2_spring.entity.enums.Role;
 @Data
 @Builder
 public class UserRoleDTO {
-    private Short id;
+    private Long id;
     @Enumerated(EnumType.STRING)
     private Role role;
 }

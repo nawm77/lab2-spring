@@ -18,12 +18,15 @@ import java.time.LocalDateTime;
 @Table(name = "offers")
 public class Offer {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String description;
+    @Enumerated(EnumType.STRING)
     private Engine engine;
     private String imageUrl;
     private Integer mileage;
     private Integer price;
+    @Enumerated(EnumType.STRING)
     private Transmission transmission;
     private Short year;
     private LocalDateTime created;

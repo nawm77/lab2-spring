@@ -18,6 +18,7 @@ import java.util.Date;
 @Table(name = "models")
 public class Model {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private Category category;

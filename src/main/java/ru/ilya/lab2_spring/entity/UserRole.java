@@ -17,7 +17,9 @@ import java.util.Set;
 @Table(name = "roles")
 public class UserRole {
     @Id
-    private Short id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<User> users;
