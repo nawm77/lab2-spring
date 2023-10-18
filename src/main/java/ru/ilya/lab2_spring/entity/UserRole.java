@@ -27,6 +27,6 @@ public class UserRole {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn("role_id")
+    @JoinColumn(name = "role_id")
     private Set<User> users;
 }

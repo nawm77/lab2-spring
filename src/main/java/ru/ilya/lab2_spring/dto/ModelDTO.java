@@ -2,10 +2,8 @@ package ru.ilya.lab2_spring.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import ru.ilya.lab2_spring.entity.enums.Category;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @Data
