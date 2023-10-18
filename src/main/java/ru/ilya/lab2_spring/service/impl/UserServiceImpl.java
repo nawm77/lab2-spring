@@ -8,6 +8,7 @@ import ru.ilya.lab2_spring.service.UserService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,7 +20,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) {
+    public User findById(UUID id) {
         return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No such user with id " + id));
     }
 
@@ -35,12 +36,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(User user) {
-        userRepository.saveAndFlush(user);
+        userRepository.save(user);
     }
 
     @Override
     public void updateUser(User user) {
-        userRepository.saveAndFlush(user);
+        userRepository.save(user);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserById(Long id) {
+    public void deleteUserById(UUID id) {
         userRepository.deleteById(id);
     }
 }

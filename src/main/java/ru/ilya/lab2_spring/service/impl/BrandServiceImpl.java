@@ -8,6 +8,7 @@ import ru.ilya.lab2_spring.service.BrandService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -25,7 +26,7 @@ public class BrandServiceImpl implements BrandService {
         return brandRepository.findAll();
     }
     @Override
-    public Brand findById(Long id){
+    public Brand findById(UUID id){
         return brandRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No such brand with id" + id));
     }
 
@@ -36,11 +37,11 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public void save(Brand brand) {
-        brandRepository.saveAndFlush(brand);
+        brandRepository.save(brand);
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         brandRepository.deleteById(id);
     }
 

@@ -8,6 +8,7 @@ import ru.ilya.lab2_spring.service.OfferService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 public class OfferServiceImpl implements OfferService {
@@ -19,7 +20,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Offer findById(Long id) {
+    public Offer findById(UUID id) {
         return offerRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No such offer with id" + id));
     }
 
@@ -30,7 +31,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public void addOffer(Offer offer) {
-        offerRepository.saveAndFlush(offer);
+        offerRepository.save(offer);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public void deleteOfferById(Long id) {
+    public void deleteOfferById(UUID id) {
         offerRepository.deleteById(id);
     }
 

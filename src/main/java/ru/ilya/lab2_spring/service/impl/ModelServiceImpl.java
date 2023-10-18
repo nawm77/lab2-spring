@@ -8,6 +8,7 @@ import ru.ilya.lab2_spring.service.ModelService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 public class ModelServiceImpl implements ModelService {
@@ -19,7 +20,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public Model findById(Long id) {
+    public Model findById(UUID id) {
         return modelRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No such model with id" + id));
     }
 
@@ -30,12 +31,12 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public void addModel(Model model) {
-        modelRepository.saveAndFlush(model);
+        modelRepository.save(model);
     }
 
     @Override
     public void updateModel(Model model) {
-        modelRepository.saveAndFlush(model);
+        modelRepository.save(model);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public void deleteModelById(Long id) {
+    public void deleteModelById(UUID id) {
         modelRepository.deleteById(id);
     }
 }

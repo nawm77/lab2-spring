@@ -3,14 +3,15 @@ package ru.ilya.lab2_spring.service;
 import ru.ilya.lab2_spring.entity.UserRole;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserRoleService {
-    UserRole findById(Long id);
+    UserRole findById(UUID id);
     UserRole findByRoleName(String roleName);
     List<UserRole> findAll();
     void addUserRole(UserRole userRole);
     void updateUserRole(UserRole userRole);
     void deleteUserRole(UserRole userRole);
-    void deleteUserRoleById(Long id);
+    void deleteUserRoleById(UUID id);
 }
 

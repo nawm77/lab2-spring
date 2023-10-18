@@ -8,6 +8,7 @@ import ru.ilya.lab2_spring.service.UserRoleService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 public class UserRoleServiceImpl implements UserRoleService {
@@ -19,7 +20,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public UserRole findById(Long id) {
+    public UserRole findById(UUID id) {
         return userRoleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No such user role with id" + id));
     }
 
@@ -35,12 +36,12 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     public void addUserRole(UserRole userRole) {
-        userRoleRepository.saveAndFlush(userRole);
+        userRoleRepository.save(userRole);
     }
 
     @Override
     public void updateUserRole(UserRole userRole) {
-        userRoleRepository.saveAndFlush(userRole);
+        userRoleRepository.save(userRole);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public void deleteUserRoleById(Long id) {
+    public void deleteUserRoleById(UUID id) {
         userRoleRepository.deleteById(id);
     }
 }

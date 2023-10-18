@@ -2,22 +2,22 @@ package ru.ilya.lab2_spring.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import ru.ilya.lab2_spring.entity.enums.Category;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @Builder
 public class ModelDTO {
-    private Long id;
+    private UUID id;
     private String name;
     private String category;
     private String imageUrl;
-    private Date startYear;
-    private Date endYear;
+    private Integer startYear;
+    private Integer endYear;
     private LocalDateTime created;
     private LocalDateTime modified;
-    private String brandName;
-    private LocalDateTime brandCreated;
-    private LocalDateTime brandModified;
+    private BrandDTO brandDTO;
 }
