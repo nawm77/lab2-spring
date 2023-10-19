@@ -31,11 +31,10 @@ public class User {
     private LocalDateTime created;
     private LocalDateTime modified;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "role_id")
     private UserRole role;
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn("seller_id")
     private List<Offer> offerList;
 }

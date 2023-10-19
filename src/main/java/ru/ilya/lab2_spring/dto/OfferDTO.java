@@ -20,5 +20,5 @@ public class OfferDTO {
     private LocalDateTime created;
     private LocalDateTime modified;
     private ModelDTO modelDTO;
-    private SellerDTO sellerDTO;
+    private UserDTO userDTO;
 }

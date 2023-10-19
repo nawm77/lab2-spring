@@ -25,8 +25,7 @@ public class UserRole {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "role")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "role_id")
     private Set<User> users;
 }
