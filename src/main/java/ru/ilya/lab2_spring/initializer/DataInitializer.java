@@ -11,7 +11,6 @@ import ru.ilya.lab2_spring.entity.enums.Transmission;
 import ru.ilya.lab2_spring.service.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Component
