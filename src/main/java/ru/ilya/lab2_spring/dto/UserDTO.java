@@ -15,7 +15,7 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private Boolean isActive;
-    private UserRoleDTO userRoleDTO;
+    private String userRoleDTO;
     private String imageUrl;
     private LocalDateTime created;
     private LocalDateTime modified;

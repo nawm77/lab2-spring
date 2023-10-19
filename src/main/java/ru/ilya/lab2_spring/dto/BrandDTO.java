@@ -13,5 +13,4 @@ public class BrandDTO {
     private String name;
     private LocalDateTime created;
     private LocalDateTime modified;
-    private ModelDTO modelDTO;
 }

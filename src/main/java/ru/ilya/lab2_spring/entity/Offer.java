@@ -33,10 +33,10 @@ public class Offer {
     private Integer year;
     private LocalDateTime created;
     private LocalDateTime modified;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "model_id")
     private Model model;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "seller_id")
     private User seller;
 }

@@ -33,10 +33,10 @@ public class Model {
     private LocalDateTime created;
     private LocalDateTime modified;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "brand_id")
     private Brand brand;
-    @OneToMany(mappedBy = "model", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "model", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Offer> offerList;
 }

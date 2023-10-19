@@ -25,7 +25,7 @@ public class Brand {
     private LocalDateTime created;
     private LocalDateTime modified;
 
-    @OneToMany(mappedBy = "brand", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.PERSIST)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Model> model;
 }
