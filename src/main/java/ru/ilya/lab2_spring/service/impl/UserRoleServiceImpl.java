@@ -3,6 +3,7 @@ package ru.ilya.lab2_spring.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.entity.UserRole;
+import ru.ilya.lab2_spring.entity.enums.Role;
 import ru.ilya.lab2_spring.repository.UserRoleRepository;
 import ru.ilya.lab2_spring.service.UserRoleService;
 
@@ -25,8 +26,8 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public UserRole findByRoleName(String roleName) {
-        return userRoleRepository.findUserRoleByRole(roleName).orElseThrow(() -> new NoSuchElementException("No such role " + roleName));
+    public UserRole findByRole(Role role) {
+        return userRoleRepository.findUserRoleByRole(role).orElseThrow(() -> new NoSuchElementException("No such role " + role));
     }
 
     @Override
