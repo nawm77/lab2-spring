@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import ru.ilya.lab2_spring.converter.CategoryConverter;
 import ru.ilya.lab2_spring.entity.enums.Category;
 
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ public class Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = CategoryConverter.class)
     private Category category;
 
     private String name;
@@ -33,10 +34,10 @@ public class Model {
     private LocalDateTime created;
     private LocalDateTime modified;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "brand_id")
     private Brand brand;
-    @OneToMany(mappedBy = "model", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "model", cascade = {CascadeType.ALL, CascadeType.ALL})
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Offer> offerList;
 }

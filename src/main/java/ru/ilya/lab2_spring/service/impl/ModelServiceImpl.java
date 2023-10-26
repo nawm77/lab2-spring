@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.dto.ModelDTO;
 import ru.ilya.lab2_spring.entity.Model;
+import ru.ilya.lab2_spring.entity.enums.Category;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.repository.ModelRepository;
 import ru.ilya.lab2_spring.service.ModelService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -42,6 +44,19 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public void updateModel(ModelDTO model) {
+        Model existingModel = mapper.toEntity(findById(model.getId()));
+        if(model.getBrandDTO() != null){
+            existingModel.setBrand(mapper.toEntity(model.getBrandDTO()));
+        }
+        if(model.getCategory() != null){
+            existingModel.setCategory(Category.valueOf(model.getCategory()));
+        }
+        if(model.getName() != null){
+            existingModel.setName(model.getName());
+        }
+        if(model.getImageUrl() != null){
+            existingModel.setImageUrl(model.getImageUrl());
+        }
         modelRepository.save(mapper.toEntity(model));
     }
 

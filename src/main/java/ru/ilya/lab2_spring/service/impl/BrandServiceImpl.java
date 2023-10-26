@@ -32,7 +32,8 @@ public class BrandServiceImpl implements BrandService {
     }
     @Override
     public BrandDTO findById(UUID id){
-        return mapper.toDTO(brandRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No such brand with id" + id)));
+        return mapper.toDTO(brandRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No such brand with id" + id)));
     }
 
     @Override

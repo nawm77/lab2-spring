@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import ru.ilya.lab2_spring.converter.RoleConverter;
 import ru.ilya.lab2_spring.entity.enums.Role;
 
 import java.util.Set;
@@ -22,7 +23,8 @@ public class UserRole {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = RoleConverter.class)
+    @Column
     private Role role;
 
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "role")

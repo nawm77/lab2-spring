@@ -5,6 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.dto.ModelDTO;
+import ru.ilya.lab2_spring.dto.UserDTO;
+import ru.ilya.lab2_spring.dto.UserRoleDTO;
 import ru.ilya.lab2_spring.entity.enums.Category;
 import ru.ilya.lab2_spring.service.*;
 
@@ -34,12 +36,12 @@ public class DataInitializer implements CommandLineRunner {
 
     private void generateData() {
         BrandDTO brandDTO = BrandDTO.builder()
-                .name("GIGANIGGGGGGA")
+                .name("BMW")
                 .modified(LocalDateTime.now())
                 .created(LocalDateTime.now())
                 .build();
         BrandDTO brandDTO1  =BrandDTO.builder()
-                .name("churka")
+                .name("Porsche")
                 .modified(LocalDateTime.now())
                 .created(LocalDateTime.now())
                 .build();
@@ -48,14 +50,22 @@ public class DataInitializer implements CommandLineRunner {
                 .imageUrl("qwerty")
                 .startYear(2022)
                 .endYear(2023)
-                .category("BUS")
+                .category("CAR")
                 .modified(LocalDateTime.now())
                 .created(LocalDateTime.now())
                 .brandDTO(brandDTO)
                 .build();
-//        brandService.save(brandDTO);
-//        brandService.save(brandDTO1);
         modelService.addModel(modelDTO);
+        brandService.delete(brandDTO);
+        UserRoleDTO userRoleDTO = UserRoleDTO.builder()
+                .role("ADMIN")
+                .build();
+        UserRoleDTO userRoleDTO1 = UserRoleDTO.builder()
+                .role("USER")
+                .build();
+        UserDTO userDTO = UserDTO.builder()
+                .userRoleDTO(userRoleDTO)
+                .build();
     }
 
 }
