@@ -1,6 +1,7 @@
 package ru.ilya.lab2_spring.service.impl;
 
 import jakarta.persistence.EntityExistsException;
+import jakarta.validation.ConstraintViolation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,8 +11,10 @@ import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.repository.BrandRepository;
 import ru.ilya.lab2_spring.service.BrandService;
+import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -20,10 +23,13 @@ import java.util.NoSuchElementException;
 public class BrandServiceImpl implements BrandService {
     private BrandRepository brandRepository;
     private final Mapper mapper;
+    private final List<String> exceptions = new ArrayList<>();
+    private final ValidationUtil validationUtil;
 
     @Autowired
-    public BrandServiceImpl(Mapper mapper) {
+    public BrandServiceImpl(Mapper mapper, ValidationUtil validationUtil) {
         this.mapper = mapper;
+        this.validationUtil = validationUtil;
     }
 
     @Autowired
@@ -54,12 +60,14 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void saveAll(List<BrandDTO> list) {
-        list.forEach(this::save);
+    public void saveAll(List<BrandDTO> list) throws IllegalArgumentRequestException {
+        for( BrandDTO dto : list){
+            save(dto);
+        }
     }
 
     @Override
-    public BrandDTO save(BrandDTO brand) throws EntityExistsException {
+    public BrandDTO save(BrandDTO brand) throws EntityExistsException, IllegalArgumentRequestException {
         BrandDTO dto = saveOrUpdate(brand);
         log.info("Create brand {} with id {} and name {}", dto, dto.getId(), dto.getName());
         return dto;
@@ -76,7 +84,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public BrandDTO update(BrandDTO brandDTO) {
+    public BrandDTO update(BrandDTO brandDTO) throws IllegalArgumentRequestException {
         if(brandRepository.findById(brandDTO.getId()).isPresent()){
             log.info("Update brand {}", brandDTO);
         }
@@ -99,9 +107,17 @@ public class BrandServiceImpl implements BrandService {
         }
     }
 
-    private BrandDTO saveOrUpdate(BrandDTO b) throws EntityExistsException {
+    private BrandDTO saveOrUpdate(BrandDTO brandDTO) throws EntityExistsException, IllegalArgumentRequestException {
+        if (!validationUtil.isValid(brandDTO)) {
+            exceptions.clear();
+            validationUtil.violations(brandDTO).stream()
+                    .map(ConstraintViolation::getMessage)
+                    .forEach(exceptions::add);
+            log.warn("Incorrect entity {}", brandDTO);
+            throw new IllegalArgumentRequestException(exceptions);
+        }
         try {
-            return mapper.toDTO(brandRepository.saveAndFlush(mapper.toEntity(b)));
+            return mapper.toDTO(brandRepository.saveAndFlush(mapper.toEntity(brandDTO)));
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
         }

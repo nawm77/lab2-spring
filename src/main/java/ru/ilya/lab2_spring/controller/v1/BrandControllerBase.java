@@ -1,6 +1,5 @@
 package ru.ilya.lab2_spring.controller.v1;
 
-import jakarta.validation.ConstraintViolation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,33 +7,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.service.BrandService;
-import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 public abstract class BrandControllerBase {
     private final BrandService brandService;
-    private final ValidationUtil validationUtil;
-    private final List<String> exceptions = new ArrayList<>();
 
     @Autowired
-    protected BrandControllerBase(BrandService brandService, ValidationUtil validationUtil) {
+    protected BrandControllerBase(BrandService brandService) {
         this.brandService = brandService;
-        this.validationUtil = validationUtil;
     }
 
     protected ResponseEntity<BrandDTO> createBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
-        if (!validationUtil.isValid(brandDTO)) {
-            exceptions.clear();
-            validationUtil.violations(brandDTO).stream()
-                    .map(ConstraintViolation::getMessage)
-                    .forEach(exceptions::add);
-            log.warn("Incorrect entity {}", brandDTO);
-            throw new IllegalArgumentRequestException(exceptions);
-        }
         BrandDTO b;
         try {
             b = brandService.save(brandDTO);
@@ -52,14 +38,6 @@ public abstract class BrandControllerBase {
     }
 
     protected ResponseEntity<BrandDTO> updateBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
-        if(!validationUtil.isValid(brandDTO)) {
-            exceptions.clear();
-            validationUtil.violations(brandDTO).stream()
-                    .map(ConstraintViolation::getMessage)
-                    .forEach(exceptions::add);
-            log.warn("Incorrect entity {}", brandDTO);
-            throw new IllegalArgumentRequestException(exceptions);
-        }
         HttpStatus status = brandService.findAllByName(brandDTO.getName()).isEmpty() ? HttpStatus.CREATED : HttpStatus.ACCEPTED;
         brandService.update(brandDTO);
         return ResponseEntity.status(status).body(brandDTO);
