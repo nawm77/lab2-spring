@@ -9,7 +9,6 @@ import ru.ilya.lab2_spring.service.ModelService;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 public abstract class ModelControllerBase {
@@ -24,21 +23,29 @@ public abstract class ModelControllerBase {
         ModelDTO m;
         try {
             m = modelService.save(modelDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(m);
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(modelDTO);
     }
 
-    protected ResponseEntity<List<ModelDTO>> getModel(String modelId) {
+    protected ResponseEntity<?> getModel(String modelId) {
         if ("-1".equals(modelId)) {
-
+            return ResponseEntity.status(HttpStatus.FOUND).body(modelService.findAll());
+        } else{
+            return ResponseEntity.status(HttpStatus.FOUND).body(modelService.findById(modelId));
         }
     }
 
     protected ResponseEntity<ModelDTO> updateModel(ModelDTO modelDTO) throws IllegalArgumentRequestException {
+        modelDTO.setModified(LocalDateTime.now());
+        HttpStatus status = modelService.findAllByName(modelDTO.getName()).isEmpty() ? HttpStatus.CREATED : HttpStatus.ACCEPTED;
+        modelService.update(modelDTO);
+        return ResponseEntity.status(status).body(modelDTO);
     }
 
     protected ResponseEntity<?> deleteModel(String id) {
+        modelService.deleteById(id);
+        return ResponseEntity.ok(id);
     }
 }

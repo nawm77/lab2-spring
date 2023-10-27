@@ -8,8 +8,6 @@ import ru.ilya.lab2_spring.dto.ModelDTO;
 import ru.ilya.lab2_spring.service.ModelService;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import java.util.List;
-
 @RestController
 @Slf4j
 public class ModelControllerImpl extends ModelControllerBase implements ModelController{
@@ -24,7 +22,7 @@ public class ModelControllerImpl extends ModelControllerBase implements ModelCon
     }
 
     @Override
-    public ResponseEntity<List<ModelDTO>> getModel(String modelId) {
+    public ResponseEntity<?> getModel(String modelId) {
         return super.getModel(modelId);
     }
 

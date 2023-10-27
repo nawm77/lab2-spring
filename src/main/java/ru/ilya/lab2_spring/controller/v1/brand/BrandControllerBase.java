@@ -26,10 +26,10 @@ public abstract class BrandControllerBase {
         BrandDTO b;
         try {
             b = brandService.save(brandDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(b);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(b);
     }
 
     protected ResponseEntity<?> getBrand(String id, Boolean withModels){

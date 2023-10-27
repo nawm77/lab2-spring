@@ -45,7 +45,7 @@ public interface BrandController {
             @Parameter(in = ParameterIn.QUERY, description = "Отображение брендов вместе с моделями", schema = @Schema(defaultValue = "false")) @RequestParam(value = "withModels", required = false, defaultValue = "false") Boolean withModels
     );
 
-    @Operation(summary = "Редактирование бренда  Если бренд отсутствует, он будет создан")
+    @Operation(summary = "Редактирование бренда. Если бренд отсутствует, он будет создан")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Бренд создан", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = BrandDTO.class))),
             @ApiResponse(responseCode = "202", description = "Бренд изменен", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = BrandDTO.class))),
