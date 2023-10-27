@@ -28,7 +28,7 @@ public abstract class BrandControllerBase {
     }
 
     protected ResponseEntity<BrandDTO> createBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
-        if (!validationUtil.isValid(brandDTO)){
+        if (!validationUtil.isValid(brandDTO)) {
             exceptions.clear();
             validationUtil.violations(brandDTO).stream()
                     .map(ConstraintViolation::getMessage)
@@ -39,9 +39,15 @@ public abstract class BrandControllerBase {
         BrandDTO b;
         try {
             b = brandService.save(brandDTO);
-        } catch (EntityExistsException e){
+        } catch (EntityExistsException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(b);
+    }
+
+    protected ResponseEntity<BrandDTO> getBrand(String id){
+        return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findById(id));
     }
 }

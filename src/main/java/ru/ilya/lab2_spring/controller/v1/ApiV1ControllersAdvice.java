@@ -39,14 +39,13 @@ public class ApiV1ControllersAdvice {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ApiErrorResponse> onNoSuchElementException(NoSuchElementException exception) {
         logWarn(exception);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 ApiErrorResponse.builder()
                         .message(exception.getLocalizedMessage())
-                        .httpStatus(HttpStatus.BAD_REQUEST)
+                        .httpStatus(HttpStatus.NOT_FOUND)
                         .build()
         );
     }
-
 
     //todo посмотреть реализацию АОП для логгирования методов с ошибками
     private void logWarn(Exception e) {

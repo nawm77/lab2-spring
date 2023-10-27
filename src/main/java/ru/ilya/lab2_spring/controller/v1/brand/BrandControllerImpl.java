@@ -23,4 +23,9 @@ public class BrandControllerImpl extends BrandControllerBase implements BrandCon
     public ResponseEntity<BrandDTO> createBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
         return super.createBrand(brandDTO);
     }
+
+    @Override
+    public ResponseEntity<BrandDTO> getBrand(String brandId) {
+        return super.getBrand(brandId);
+    }
 }

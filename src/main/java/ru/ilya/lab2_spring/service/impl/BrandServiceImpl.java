@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.mapper.Mapper;
-import ru.ilya.lab2_spring.model.Brand;
 import ru.ilya.lab2_spring.repository.BrandRepository;
 import ru.ilya.lab2_spring.service.BrandService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -38,10 +36,10 @@ public class BrandServiceImpl implements BrandService {
     }
 
     private BrandDTO add(BrandDTO b) throws EntityExistsException {
-        Optional<Brand> existingBrand = brandRepository.findAllByName(b.getName()).stream().findFirst();
-        if(existingBrand.isPresent()){
-            throw new EntityExistsException(String.format("Brand " + b + " already exists"));
-        }
+//        Optional<Brand> existingBrand = brandRepository.findAllByName(b.getName()).stream().findFirst();
+//        if(existingBrand.isPresent()){
+//            throw new EntityExistsException(String.format("Brand " + b + " already exists"));
+//        }
         BrandDTO dto = mapper.toDTO(brandRepository.saveAndFlush(mapper.toEntity(b)));
         log.info("Create brand {} with id {}", dto, dto.getId());
         return dto;
@@ -58,7 +56,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public BrandDTO findById(String id) {
         return mapper.toDTO(brandRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("No such brand with id" + id)));
+                .orElseThrow(() -> new NoSuchElementException("No such brand with id " + id)));
     }
 
     @Override
