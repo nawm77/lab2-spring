@@ -47,7 +47,10 @@ public abstract class BrandControllerBase {
         return ResponseEntity.status(HttpStatus.CREATED).body(b);
     }
 
-    protected ResponseEntity<BrandDTO> getBrand(String id){
-        return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findById(id));
+    protected ResponseEntity<List<BrandDTO>> getBrand(String id){
+        if("-1".equals(id)){
+            return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findAll());
+        }
+        return ResponseEntity.status(HttpStatus.FOUND).body(List.of(brandService.findById(id)));
     }
 }

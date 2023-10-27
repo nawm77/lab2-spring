@@ -10,6 +10,8 @@ import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 public class BrandControllerImpl extends BrandControllerBase implements BrandController{
@@ -25,7 +27,7 @@ public class BrandControllerImpl extends BrandControllerBase implements BrandCon
     }
 
     @Override
-    public ResponseEntity<BrandDTO> getBrand(String brandId) {
+    public ResponseEntity<List<BrandDTO>> getBrand(String brandId) {
         return super.getBrand(brandId);
     }
 }

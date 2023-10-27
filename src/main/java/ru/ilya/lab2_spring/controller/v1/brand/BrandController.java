@@ -16,6 +16,8 @@ import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.model.api.ApiErrorResponse;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
+import java.util.List;
+
 import static ru.ilya.lab2_spring.model.api.ApiConstants.BRAND_API_V1_PATH;
 import static ru.ilya.lab2_spring.model.api.ApiConstants.JSON_TYPE;
 
@@ -32,14 +34,14 @@ public interface BrandController {
     method = RequestMethod.POST)
     ResponseEntity<BrandDTO> createBrand(@RequestBody BrandDTO brandDTO) throws IllegalArgumentRequestException;
 
-    @Operation(summary = "Получение списка всех брендов")
+    @Operation(summary = "Получение списка всех брендов / одного бренда")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Бренд успешно найден", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = BrandDTO.class))),
-            @ApiResponse(responseCode = "204", description = "Бренд не найден")
+            @ApiResponse(responseCode = "201", description = "Бренд успешно найден", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = BrandDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Бренд не найден")
     })
     @RequestMapping(value = BRAND_API_V1_PATH + "/**",
     produces = {JSON_TYPE},
     consumes = {JSON_TYPE},
     method = RequestMethod.GET)
-    ResponseEntity<BrandDTO> getBrand(@Parameter(in = ParameterIn.QUERY, description = "ID бренда", schema = @Schema(defaultValue = "-1")) @RequestParam(value = "brandId", required = false, defaultValue = "-1") String brandId);
+    ResponseEntity<List<BrandDTO>> getBrand(@Parameter(in = ParameterIn.QUERY, description = "ID бренда", schema = @Schema(defaultValue = "-1")) @RequestParam(value = "brandId", required = false, defaultValue = "-1") String brandId);
 }
