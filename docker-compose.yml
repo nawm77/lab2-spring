@@ -9,3 +9,33 @@ services:
       POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: root
       POSTGRES_DB: cardb
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus_spring
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./src/main/resources/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: always
+  grafana:
+    image: grafana/grafana
+    container_name: grafana_spring
+    ports:
+      - "3000:3000"
+    volumes:
+      - .grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+  service:
+    image: lab2spring:0.2.0
+    container_name: service-backend
+    depends_on:
+      - cardb
+      - prometheus
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_URL: jdbc:postgresql://cardb:5432/cardb
+

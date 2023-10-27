@@ -3,7 +3,9 @@ package ru.ilya.lab2_spring.service.impl;
 import jakarta.persistence.EntityExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.ilya.lab2_spring.dto.UserDTO;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.repository.UserRepository;
@@ -33,7 +35,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteById(String id) {
-        deleteUserById(id);
+        try {
+            userRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
+        }
     }
 
     @Override
@@ -71,15 +77,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(UserDTO user) {
         userRepository.delete(mapper.toEntity(user));
-    }
-
-    @Override
-    public void deleteUserById(String id) {
-        try {
-            userRepository.deleteById(id);
-        } catch (Exception e){
-            log.warn("No such user with id: {}", id);
-            throw new NoSuchElementException("No such user with id " + id);
-        }
     }
 }

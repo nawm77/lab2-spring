@@ -1,5 +1,7 @@
 package ru.ilya.lab2_spring.controller.v1.brand;
 
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +17,12 @@ import java.util.List;
 @Slf4j
 public abstract class BrandControllerBase {
     private final BrandService brandService;
+    private final MeterRegistry meterRegistry;
 
     @Autowired
-    protected BrandControllerBase(BrandService brandService) {
+    protected BrandControllerBase(BrandService brandService, MeterRegistry meterRegistry) {
         this.brandService = brandService;
+        this.meterRegistry = meterRegistry;
     }
 
     protected ResponseEntity<BrandDTO> createBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
@@ -33,6 +37,7 @@ public abstract class BrandControllerBase {
     }
 
     protected ResponseEntity<?> getBrand(String id, Boolean withModels) {
+        Gauge.builder("metric", this, (v) -> Math.random()).register(meterRegistry);
         if ("-1".equals(id)) {
             if (!withModels) {
                 return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findAll());

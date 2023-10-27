@@ -1,5 +1,6 @@
 package ru.ilya.lab2_spring.controller.v1.brand;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +14,8 @@ import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 public class BrandControllerImpl extends BrandControllerBase implements BrandController {
 
     @Autowired
-    public BrandControllerImpl(BrandService brandService) {
-        super(brandService);
+    public BrandControllerImpl(BrandService brandService, MeterRegistry meterRegistry) {
+        super(brandService, meterRegistry);
     }
 
     @Override
