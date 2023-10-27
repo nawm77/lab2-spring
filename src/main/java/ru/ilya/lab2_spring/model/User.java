@@ -1,40 +1,36 @@
-package ru.ilya.lab2_spring.entity;
+package ru.ilya.lab2_spring.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+public class User extends BaseEntity{
+    @Column(unique = true, nullable = false)
     private String username;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
     private Boolean isActive;
+    @Column(unique = true)
     private String imageUrl;
-    private LocalDateTime created;
-    private LocalDateTime modified;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private UserRole role;
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Offer> offerList;
 }

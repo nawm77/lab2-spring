@@ -1,6 +1,5 @@
-package ru.ilya.lab2_spring.entity.enums;
+package ru.ilya.lab2_spring.model.enums;
 
-import lombok.Data;
 import lombok.Getter;
 
 @Getter
@@ -20,6 +19,6 @@ public enum Role {
                 return role;
             }
         }
-        throw new IllegalArgumentException("Invalid code: " + code);
+        throw new IllegalArgumentException("No such role with code: " + code);
     }
 }

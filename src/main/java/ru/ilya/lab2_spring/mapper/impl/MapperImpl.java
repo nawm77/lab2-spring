@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.dto.*;
-import ru.ilya.lab2_spring.entity.*;
+import ru.ilya.lab2_spring.model.*;
 import ru.ilya.lab2_spring.mapper.Mapper;
 
 @Service

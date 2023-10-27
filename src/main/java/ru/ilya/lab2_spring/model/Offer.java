@@ -1,40 +1,30 @@
-package ru.ilya.lab2_spring.entity;
+package ru.ilya.lab2_spring.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import ru.ilya.lab2_spring.entity.enums.Engine;
-import ru.ilya.lab2_spring.entity.enums.Transmission;
+import lombok.*;
+import ru.ilya.lab2_spring.model.enums.Engine;
+import ru.ilya.lab2_spring.model.enums.Transmission;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Offer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-
+public class Offer extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Transmission transmission;
     @Enumerated(EnumType.STRING)
     private Engine engine;
 
+    @Column(unique = true)
     private String imageUrl;
     private String description;
     private Integer mileage;
     private Integer price;
     private Integer year;
-    private LocalDateTime created;
-    private LocalDateTime modified;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "model_id")
+    @JoinColumn(name = "model_id", nullable = false)
     private Model model;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "seller_id")

@@ -1,7 +1,7 @@
 package ru.ilya.lab2_spring.mapper;
 
 import ru.ilya.lab2_spring.dto.*;
-import ru.ilya.lab2_spring.entity.*;
+import ru.ilya.lab2_spring.model.*;
 
 public interface Mapper {
     Model toEntity(ModelDTO modelDTO);

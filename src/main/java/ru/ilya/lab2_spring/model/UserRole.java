@@ -1,33 +1,26 @@
-package ru.ilya.lab2_spring.entity;
+package ru.ilya.lab2_spring.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import ru.ilya.lab2_spring.converter.RoleConverter;
-import ru.ilya.lab2_spring.entity.enums.Role;
+import ru.ilya.lab2_spring.model.enums.Role;
 
 import java.util.Set;
-import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRole {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-
+public class UserRole extends BaseEntity{
     @Convert(converter = RoleConverter.class)
     @Column
     private Role role;
 
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "role")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<User> users;
 }

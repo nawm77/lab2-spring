@@ -1,5 +1,6 @@
 package ru.ilya.lab2_spring.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.dto.UserDTO;
@@ -9,9 +10,9 @@ import ru.ilya.lab2_spring.service.UserService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final Mapper mapper;
@@ -23,9 +24,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findById(UUID id) {
+    public UserDTO findById(String id) {
         return mapper.toDTO(userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No such user with id " + id)));
+    }
+
+    @Override
+    public void deleteById(String id) {
+        deleteUserById(id);
     }
 
     @Override
@@ -56,7 +62,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserById(UUID id) {
-        userRepository.deleteById(id);
+    public void deleteUserById(String id) {
+        try {
+            userRepository.deleteById(id);
+        } catch (Exception e){
+            log.warn("No such user with id: {}", id);
+            throw new NoSuchElementException("No such user with id " + id);
+        }
     }
 }

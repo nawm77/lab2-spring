@@ -2,7 +2,7 @@ package ru.ilya.lab2_spring.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import ru.ilya.lab2_spring.entity.enums.Category;
+import ru.ilya.lab2_spring.model.enums.Category;
 
 @Converter(autoApply = true)
 public class CategoryConverter implements AttributeConverter<Category, Integer> {

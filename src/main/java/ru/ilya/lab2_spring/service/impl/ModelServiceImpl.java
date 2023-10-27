@@ -3,16 +3,14 @@ package ru.ilya.lab2_spring.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.dto.ModelDTO;
-import ru.ilya.lab2_spring.entity.Model;
-import ru.ilya.lab2_spring.entity.enums.Category;
+import ru.ilya.lab2_spring.model.Model;
+import ru.ilya.lab2_spring.model.enums.Category;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.repository.ModelRepository;
 import ru.ilya.lab2_spring.service.ModelService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ModelServiceImpl implements ModelService {
@@ -26,7 +24,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public ModelDTO findById(UUID id) {
+    public ModelDTO findById(String id) {
         return mapper.toDTO(modelRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No such model with id" + id)));
     }
 
@@ -66,7 +64,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public void deleteModelById(UUID id) {
+    public void deleteModelById(String id) {
         modelRepository.deleteById(id);
     }
 }

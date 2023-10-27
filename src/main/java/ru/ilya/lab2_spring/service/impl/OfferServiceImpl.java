@@ -3,14 +3,12 @@ package ru.ilya.lab2_spring.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.dto.OfferDTO;
-import ru.ilya.lab2_spring.entity.Offer;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.repository.OfferRepository;
 import ru.ilya.lab2_spring.service.OfferService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Service
 public class OfferServiceImpl implements OfferService {
@@ -24,7 +22,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public OfferDTO findById(UUID id) {
+    public OfferDTO findById(String id) {
         return mapper.toDTO(offerRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No such offer with id" + id)));
     }
 
@@ -51,7 +49,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public void deleteOfferById(UUID id) {
+    public void deleteOfferById(String id) {
         offerRepository.deleteById(id);
     }
 

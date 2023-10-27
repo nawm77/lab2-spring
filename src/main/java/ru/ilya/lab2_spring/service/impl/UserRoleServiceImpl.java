@@ -3,15 +3,13 @@ package ru.ilya.lab2_spring.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.dto.UserRoleDTO;
-import ru.ilya.lab2_spring.entity.UserRole;
-import ru.ilya.lab2_spring.entity.enums.Role;
+import ru.ilya.lab2_spring.model.enums.Role;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.repository.UserRoleRepository;
 import ru.ilya.lab2_spring.service.UserRoleService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Service
 public class UserRoleServiceImpl implements UserRoleService {
@@ -25,7 +23,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public UserRoleDTO findById(UUID id) {
+    public UserRoleDTO findById(String id) {
         return mapper.toDTO(userRoleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No such user role with id" + id)));
     }
 
@@ -57,7 +55,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public void deleteUserRoleById(UUID id) {
+    public void deleteUserRoleById(String id) {
         userRoleRepository.deleteById(id);
     }
 }

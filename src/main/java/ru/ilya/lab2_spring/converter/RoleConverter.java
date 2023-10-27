@@ -2,7 +2,7 @@ package ru.ilya.lab2_spring.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import ru.ilya.lab2_spring.entity.enums.Role;
+import ru.ilya.lab2_spring.model.enums.Role;
 
 @Converter(autoApply = true)
 public class RoleConverter implements AttributeConverter<Role, Integer> {

@@ -1,54 +1,87 @@
 package ru.ilya.lab2_spring.service.impl;
 
+import jakarta.persistence.EntityExistsException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.dto.BrandDTO;
+import ru.ilya.lab2_spring.model.Brand;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.repository.BrandRepository;
 import ru.ilya.lab2_spring.service.BrandService;
+import ru.ilya.lab2_spring.service.util.ValidationUtil;
+import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
+@Slf4j
 public class BrandServiceImpl implements BrandService {
-    private final BrandRepository brandRepository;
+    private BrandRepository brandRepository;
     private final Mapper mapper;
 
     @Autowired
-    public BrandServiceImpl(BrandRepository brandRepository, Mapper mapper) {
-        this.brandRepository = brandRepository;
+    public BrandServiceImpl(Mapper mapper) {
         this.mapper = mapper;
     }
-    public void add(BrandDTO b){
-        mapper.toDTO(brandRepository.save(mapper.toEntity(b)));
+
+    @Autowired
+    public void setBrandRepository(BrandRepository brandRepository) {
+        this.brandRepository = brandRepository;
     }
 
-    public List<BrandDTO> findAll(){
+    @Override
+    public List<BrandDTO> findAll() {
         return brandRepository.findAll().stream()
                 .map(mapper::toDTO)
                 .toList();
     }
+
+    private void add(BrandDTO b) throws EntityExistsException {
+        Optional<Brand> existingBrand = brandRepository.findAllByName(b.getName()).stream().findFirst();
+        if(existingBrand.isPresent()){
+            throw new EntityExistsException(String.format("Brand " + b + " already exists"));
+        }
+        BrandDTO dto = mapper.toDTO(brandRepository.save(mapper.toEntity(b)));
+        log.info("Create brand {} with id {}", dto, dto.getId());
+    }
+
     @Override
-    public BrandDTO findById(UUID id){
+    public List<BrandDTO> findAllByName(String name) {
+        return brandRepository.findAllByName(name)
+                .stream()
+                .map(mapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    public BrandDTO findById(String id) {
         return mapper.toDTO(brandRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No such brand with id" + id)));
     }
 
     @Override
     public void saveAll(List<BrandDTO> list) {
-        list.forEach(this::save);
+        for (BrandDTO brandDTO : list) {
+            save(brandDTO);
+        }
     }
 
     @Override
-    public void save(BrandDTO brand) {
-        brandRepository.saveAndFlush(mapper.toEntity(brand));
+    public void save(BrandDTO brand) throws EntityExistsException {
+        add(brand);
     }
 
     @Override
-    public void deleteById(UUID id) {
-        brandRepository.deleteById(id);
+    public void deleteById(String id) {
+        try {
+            brandRepository.deleteById(id);
+        } catch (Exception e){
+            throw new NoSuchElementException("No such element with id : " + id);
+        }
     }
 
     @Override

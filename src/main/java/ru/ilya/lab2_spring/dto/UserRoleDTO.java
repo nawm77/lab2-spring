@@ -1,13 +1,15 @@
 package ru.ilya.lab2_spring.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.UUID;
 
 @Data
 @Builder
 public class UserRoleDTO {
-    private UUID id;
+    private String id;
+    @NotNull
+    @NotEmpty
     private String role;
 }
