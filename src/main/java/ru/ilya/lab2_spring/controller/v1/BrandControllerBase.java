@@ -53,4 +53,18 @@ public abstract class BrandControllerBase {
         }
         return ResponseEntity.status(HttpStatus.FOUND).body(List.of(brandService.findById(id)));
     }
+
+    protected ResponseEntity<BrandDTO> updateBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
+        if(!validationUtil.isValid(brandDTO)) {
+            exceptions.clear();
+            validationUtil.violations(brandDTO).stream()
+                    .map(ConstraintViolation::getMessage)
+                    .forEach(exceptions::add);
+            log.warn("Incorrect entity {}", brandDTO);
+            throw new IllegalArgumentRequestException(exceptions);
+        }
+        brandService.update(brandDTO);
+        return brandService.findAllByName(brandDTO.getName()).isEmpty() ?
+                ResponseEntity.status(HttpStatus.CREATED).body(brandDTO) : ResponseEntity.status(HttpStatus.ACCEPTED).body(brandDTO);
+    }
 }

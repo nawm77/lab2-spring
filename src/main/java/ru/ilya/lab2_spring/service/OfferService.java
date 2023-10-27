@@ -4,7 +4,7 @@ import ru.ilya.lab2_spring.dto.OfferDTO;
 
 import java.util.List;
 
-public interface OfferService {
+public interface OfferService extends BaseService<OfferDTO> {
     List<OfferDTO> findAll();
     OfferDTO findById(String id);
     void addOffer(OfferDTO offer);

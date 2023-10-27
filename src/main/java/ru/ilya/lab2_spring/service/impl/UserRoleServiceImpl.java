@@ -28,6 +28,16 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
+    public void deleteById(String id) {
+
+    }
+
+    @Override
+    public UserRoleDTO update(UserRoleDTO object) {
+        return null;
+    }
+
+    @Override
     public UserRoleDTO findByRole(Role role) {
         return mapper.toDTO(userRoleRepository.findUserRoleByRole(role).orElseThrow(() -> new NoSuchElementException("No such role " + role)));
     }

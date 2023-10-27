@@ -35,6 +35,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO update(UserDTO object) {
+        return null;
+    }
+
+    @Override
     public UserDTO findByUsername(String username) {
         return mapper.toDTO(userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("No such user " + username)));
     }

@@ -4,7 +4,7 @@ import ru.ilya.lab2_spring.dto.ModelDTO;
 
 import java.util.List;
 
-public interface ModelService {
+public interface ModelService extends BaseService<ModelDTO> {
     ModelDTO findById(String id);
     List<ModelDTO> findAll();
     void addModel(ModelDTO model);

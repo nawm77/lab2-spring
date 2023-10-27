@@ -5,7 +5,7 @@ import ru.ilya.lab2_spring.model.enums.Role;
 
 import java.util.List;
 
-public interface UserRoleService {
+public interface UserRoleService extends BaseService<UserRoleDTO> {
     UserRoleDTO findById(String id);
     UserRoleDTO findByRole(Role role);
     List<UserRoleDTO> findAll();

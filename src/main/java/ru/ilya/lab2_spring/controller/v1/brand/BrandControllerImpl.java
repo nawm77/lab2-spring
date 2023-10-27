@@ -30,4 +30,9 @@ public class BrandControllerImpl extends BrandControllerBase implements BrandCon
     public ResponseEntity<List<BrandDTO>> getBrand(String brandId) {
         return super.getBrand(brandId);
     }
+
+    @Override
+    public ResponseEntity<BrandDTO> updateBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
+        return super.updateBrand(brandDTO);
+    }
 }

@@ -44,4 +44,16 @@ public interface BrandController {
     consumes = {JSON_TYPE},
     method = RequestMethod.GET)
     ResponseEntity<List<BrandDTO>> getBrand(@Parameter(in = ParameterIn.QUERY, description = "ID бренда", schema = @Schema(defaultValue = "-1")) @RequestParam(value = "brandId", required = false, defaultValue = "-1") String brandId);
+
+    @Operation(summary = "Редактирование бренда  Если бренд отсутствует, он будет создан")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Бренд создан", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = BrandDTO.class))),
+            @ApiResponse(responseCode = "202", description = "Бренд изменен", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = BrandDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Некорректные данные", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = ApiErrorResponse.class)))
+    })
+    @RequestMapping(value = BRAND_API_V1_PATH + "/**",
+    produces = {JSON_TYPE},
+    consumes = {JSON_TYPE},
+    method = RequestMethod.PUT)
+    ResponseEntity<BrandDTO> updateBrand(@RequestBody BrandDTO brandDTO) throws IllegalArgumentRequestException;
 }

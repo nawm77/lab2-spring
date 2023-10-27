@@ -27,6 +27,16 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
+    public void deleteById(String id) {
+
+    }
+
+    @Override
+    public OfferDTO update(OfferDTO object) {
+        return null;
+    }
+
+    @Override
     public List<OfferDTO> findAll() {
         return offerRepository.findAll().stream()
                 .map(mapper::toDTO)

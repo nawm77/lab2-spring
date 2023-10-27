@@ -3,11 +3,14 @@ package ru.ilya.lab2_spring.service.impl;
 import jakarta.persistence.EntityExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.repository.BrandRepository;
 import ru.ilya.lab2_spring.service.BrandService;
+import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -35,15 +38,6 @@ public class BrandServiceImpl implements BrandService {
                 .toList();
     }
 
-    private BrandDTO add(BrandDTO b) throws EntityExistsException {
-//        Optional<Brand> existingBrand = brandRepository.findAllByName(b.getName()).stream().findFirst();
-//        if(existingBrand.isPresent()){
-//            throw new EntityExistsException(String.format("Brand " + b + " already exists"));
-//        }
-        BrandDTO dto = mapper.toDTO(brandRepository.saveAndFlush(mapper.toEntity(b)));
-        log.info("Create brand {} with id {}", dto, dto.getId());
-        return dto;
-    }
 
     @Override
     public List<BrandDTO> findAllByName(String name) {
@@ -61,32 +55,50 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public void saveAll(List<BrandDTO> list) {
-        for (BrandDTO brandDTO : list) {
-            save(brandDTO);
-        }
+        list.forEach(this::save);
     }
 
     @Override
     public BrandDTO save(BrandDTO brand) throws EntityExistsException {
-        return add(brand);
+        log.info("Create brand {} with id {} and name {}", brand, brand.getId(), brand.getName());
+        return saveOrUpdate(brand);
     }
 
     @Override
     public void deleteById(String id) {
         try {
             brandRepository.deleteById(id);
+            log.info("Delete brand with id {}", id);
         } catch (Exception e){
-            throw new NoSuchElementException("No such element with id : " + id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
         }
     }
 
     @Override
-    public void deleteAll(List<BrandDTO> list) {
-        list.forEach(this::delete);
+    public BrandDTO update(BrandDTO brandDTO) {
+        if(brandRepository.findById(brandDTO.getId()).isPresent()){
+            log.info("Update brand {}", brandDTO);
+        }
+        return saveOrUpdate(brandDTO);
     }
 
     @Override
-    public void delete(BrandDTO brand) {
-        brandRepository.delete(mapper.toEntity(brand));
+    public void deleteAll(List<BrandDTO> brandDTOList) throws IllegalArgumentRequestException {
+        for (BrandDTO dto : brandDTOList){
+            delete(dto);
+        }
+    }
+
+    @Override
+    public void delete(BrandDTO brand) throws IllegalArgumentRequestException {
+        try {
+            brandRepository.delete(mapper.toEntity(brand));
+        } catch (Exception e){
+            throw new IllegalArgumentRequestException(e.getLocalizedMessage());
+        }
+    }
+
+    private BrandDTO saveOrUpdate(BrandDTO b) throws EntityExistsException {
+        return mapper.toDTO(brandRepository.saveAndFlush(mapper.toEntity(b)));
     }
 }

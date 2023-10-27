@@ -29,6 +29,16 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
+    public void deleteById(String id) {
+        modelRepository.deleteById(id);
+    }
+
+    @Override
+    public ModelDTO update(ModelDTO object) {
+        return null;
+    }
+
+    @Override
     public List<ModelDTO> findAll() {
         return modelRepository.findAll().stream()
                 .map(mapper::toDTO)
