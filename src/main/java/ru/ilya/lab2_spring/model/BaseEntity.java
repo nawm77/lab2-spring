@@ -12,8 +12,8 @@ public class BaseEntity {
     @Id
     @GeneratedValue(generator = "uuid-string")
     @GenericGenerator(name = "uuid-string",
-                    strategy = "org.hibernate.id.UUI" +
-                            "DGenerator")
+            strategy = "org.hibernate.id.UUI" +
+                    "DGenerator")
     @Column(unique = true)
     private String id;
     @Column(nullable = false)
@@ -21,12 +21,12 @@ public class BaseEntity {
     private LocalDateTime modified;
 
     @PrePersist
-    private void create(){
-        created=LocalDateTime.now();
+    private void create() {
+        created = LocalDateTime.now();
     }
 
     @PreUpdate
-    private void update(){
+    private void update() {
         modified = LocalDateTime.now();
     }
 }

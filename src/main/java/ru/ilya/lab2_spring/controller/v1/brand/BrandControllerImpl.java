@@ -10,7 +10,7 @@ import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 @RestController
 @Slf4j
-public class BrandControllerImpl extends BrandControllerBase implements BrandController{
+public class BrandControllerImpl extends BrandControllerBase implements BrandController {
 
     @Autowired
     public BrandControllerImpl(BrandService brandService) {

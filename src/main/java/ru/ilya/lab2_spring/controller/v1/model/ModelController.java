@@ -26,9 +26,9 @@ public interface ModelController {
             @ApiResponse(responseCode = "409", description = "Модель уже существует", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     @RequestMapping(value = MODEL_API_V1_PATH + "/**",
-    produces = {JSON_TYPE},
-    consumes = {JSON_TYPE},
-    method = RequestMethod.POST)
+            produces = {JSON_TYPE},
+            consumes = {JSON_TYPE},
+            method = RequestMethod.POST)
     ResponseEntity<ModelDTO> createModel(@RequestBody ModelDTO modelDTO) throws IllegalArgumentRequestException;
 
     @Operation(summary = "Получение списка всех моделей / одной модели")

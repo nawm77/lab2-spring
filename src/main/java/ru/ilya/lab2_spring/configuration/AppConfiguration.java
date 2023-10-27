@@ -9,10 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppConfiguration {
     @Bean
-    public ModelMapper modelMapper(){return new ModelMapper();}
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
     @Bean
-    public Validator validator(){
+    public Validator validator() {
         return Validation
                 .buildDefaultValidatorFactory()
                 .getValidator();

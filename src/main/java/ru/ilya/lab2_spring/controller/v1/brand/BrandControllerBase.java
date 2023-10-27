@@ -32,15 +32,15 @@ public abstract class BrandControllerBase {
         }
     }
 
-    protected ResponseEntity<?> getBrand(String id, Boolean withModels){
-        if("-1".equals(id)){
-            if(!withModels) {
+    protected ResponseEntity<?> getBrand(String id, Boolean withModels) {
+        if ("-1".equals(id)) {
+            if (!withModels) {
                 return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findAll());
             } else {
                 return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findAllWithModels());
             }
-        } else{
-            if(!withModels) {
+        } else {
+            if (!withModels) {
                 return ResponseEntity.status(HttpStatus.FOUND).body(List.of(brandService.findById(id)));
             } else {
                 return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findByIdWithModel(id));

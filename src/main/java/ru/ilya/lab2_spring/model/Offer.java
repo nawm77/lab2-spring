@@ -11,7 +11,7 @@ import ru.ilya.lab2_spring.model.enums.Transmission;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Offer extends BaseEntity{
+public class Offer extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Transmission transmission;
     @Enumerated(EnumType.STRING)

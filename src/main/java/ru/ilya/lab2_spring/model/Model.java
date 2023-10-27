@@ -15,7 +15,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Model extends BaseEntity{
+public class Model extends BaseEntity {
     @Convert(converter = CategoryConverter.class)
     private Category category;
     @Column(nullable = false, unique = true)

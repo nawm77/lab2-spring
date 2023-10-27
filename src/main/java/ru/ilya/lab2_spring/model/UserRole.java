@@ -15,7 +15,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRole extends BaseEntity{
+public class UserRole extends BaseEntity {
     @Convert(converter = RoleConverter.class)
     @Column
     private Role role;

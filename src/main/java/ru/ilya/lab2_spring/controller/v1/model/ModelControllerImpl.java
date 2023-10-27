@@ -10,7 +10,7 @@ import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 @RestController
 @Slf4j
-public class ModelControllerImpl extends ModelControllerBase implements ModelController{
+public class ModelControllerImpl extends ModelControllerBase implements ModelController {
     @Autowired
     public ModelControllerImpl(ModelService modelService) {
         super(modelService);

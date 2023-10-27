@@ -9,6 +9,7 @@ public class ThreadPoolFactory {
     @Value("thread-pool-size:4")
     private static final int POOL_SIZE = 4;
     private static final ExecutorService DEFAULT_POOL = Executors.newFixedThreadPool(POOL_SIZE);
+
     public static ExecutorService getDefaultPool() {
         return DEFAULT_POOL;
     }

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class ApiV1ControllerAdviceAspect {
-    private final Logger logger = LoggerFactory.getLogger(ApiV1ControllerAdviceAspect.class);
+public class ApiControllerAdviceAspect {
+    private final Logger logger = LoggerFactory.getLogger(ApiControllerAdviceAspect.class);
 
     @AfterThrowing(pointcut = "execution(* ru.ilya.lab2_spring.controller.v1..*.*(..))", throwing = "ex")
     public void logControllerAdviceErrors(JoinPoint joinPoint, Exception ex) {

@@ -7,11 +7,17 @@ import java.util.List;
 
 public interface UserRoleService extends BaseService<UserRoleDTO> {
     UserRoleDTO findById(String id);
+
     UserRoleDTO findByRole(Role role);
+
     List<UserRoleDTO> findAll();
+
     void addUserRole(UserRoleDTO userRole);
+
     void updateUserRole(UserRoleDTO userRole);
+
     void deleteUserRole(UserRoleDTO userRole);
+
     void deleteUserRoleById(String id);
 }
 

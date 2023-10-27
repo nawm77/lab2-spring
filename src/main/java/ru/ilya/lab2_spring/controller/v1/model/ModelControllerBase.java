@@ -24,7 +24,7 @@ public abstract class ModelControllerBase {
         try {
             m = modelService.save(modelDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(m);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
         }
     }
@@ -32,7 +32,7 @@ public abstract class ModelControllerBase {
     protected ResponseEntity<?> getModel(String modelId) {
         if ("-1".equals(modelId)) {
             return ResponseEntity.status(HttpStatus.FOUND).body(modelService.findAll());
-        } else{
+        } else {
             return ResponseEntity.status(HttpStatus.FOUND).body(modelService.findById(modelId));
         }
     }

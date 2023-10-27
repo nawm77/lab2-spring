@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 @Slf4j
-public class ApiV1ControllerAdvice {
+public class ApiControllerAdvice {
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ApiErrorResponse> onResponseStatusException(ResponseStatusException exception) {
         return ResponseEntity.status(exception.getStatusCode()).body(

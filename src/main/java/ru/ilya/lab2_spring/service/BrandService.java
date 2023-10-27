@@ -8,7 +8,10 @@ import java.util.List;
 
 public interface BrandService extends BaseService<BrandDTO> {
     List<BrandDTO> findAllByName(String name);
+
     void delete(BrandDTO brand) throws IllegalArgumentRequestException;
+
     List<BrandModelViewModel> findAllWithModels();
+
     BrandModelViewModel findByIdWithModel(String id);
 }

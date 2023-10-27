@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Brand extends BaseEntity{
+public class Brand extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String name;
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
