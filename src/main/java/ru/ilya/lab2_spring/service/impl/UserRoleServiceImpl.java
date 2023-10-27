@@ -1,5 +1,6 @@
 package ru.ilya.lab2_spring.service.impl;
 
+import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.dto.UserRoleDTO;
@@ -7,6 +8,7 @@ import ru.ilya.lab2_spring.model.enums.Role;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.repository.UserRoleRepository;
 import ru.ilya.lab2_spring.service.UserRoleService;
+import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -34,6 +36,11 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     public UserRoleDTO update(UserRoleDTO object) {
+        return null;
+    }
+
+    @Override
+    public UserRoleDTO save(UserRoleDTO object) throws IllegalArgumentRequestException, EntityExistsException {
         return null;
     }
 

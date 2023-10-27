@@ -28,7 +28,6 @@ public class BrandServiceImpl implements BrandService {
     private final Mapper mapper;
     private final List<String> exceptions = new ArrayList<>();
     private final ValidationUtil validationUtil;
-    private final ExecutorService executorService = ThreadPoolFactory.getDefaultPool();
 
     @Autowired
     public BrandServiceImpl(Mapper mapper, ValidationUtil validationUtil) {
@@ -64,13 +63,6 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void saveAll(List<BrandDTO> list) throws IllegalArgumentRequestException {
-        for (BrandDTO dto : list) {
-            executorService.submit(() -> save(dto));
-        }
-    }
-
-    @Override
     public BrandDTO save(BrandDTO brand) throws EntityExistsException, IllegalArgumentRequestException {
         BrandDTO dto = saveOrUpdate(brand);
         log.info("Create brand {} with id {} and name {}", dto, dto.getId(), dto.getName());
@@ -93,13 +85,6 @@ public class BrandServiceImpl implements BrandService {
             log.info("Update brand {}", brandDTO);
         }
         return saveOrUpdate(brandDTO);
-    }
-
-    @Override
-    public void deleteAll(List<BrandDTO> brandDTOList) throws IllegalArgumentRequestException {
-        for (BrandDTO dto : brandDTOList) {
-            delete(dto);
-        }
     }
 
     @Override

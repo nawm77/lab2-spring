@@ -1,5 +1,6 @@
 package ru.ilya.lab2_spring.service.impl;
 
+import jakarta.persistence.EntityExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import ru.ilya.lab2_spring.dto.UserDTO;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.repository.UserRepository;
 import ru.ilya.lab2_spring.service.UserService;
+import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -36,6 +38,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO update(UserDTO object) {
+        return null;
+    }
+
+    @Override
+    public UserDTO save(UserDTO object) throws IllegalArgumentRequestException, EntityExistsException {
         return null;
     }
 

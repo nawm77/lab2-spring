@@ -13,10 +13,9 @@ import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 @Slf4j
-public class ApiV1ControllersAdvice {
+public class ApiV1ControllerAdvice {
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ApiErrorResponse> onResponseStatusException(ResponseStatusException exception) {
-        logWarn(exception);
         return ResponseEntity.status(exception.getStatusCode()).body(
                 ApiErrorResponse.builder()
                         .httpStatus(HttpStatus.resolve(exception.getStatusCode().value()))
@@ -27,7 +26,6 @@ public class ApiV1ControllersAdvice {
 
     @ExceptionHandler(IllegalArgumentRequestException.class)
     public ResponseEntity<ApiErrorResponse> onIllegalArgumentException(IllegalArgumentRequestException exception) {
-        logWarn(exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ApiErrorResponse.builder()
                         .message(exception.getLocalizedMessage())
@@ -38,17 +36,11 @@ public class ApiV1ControllersAdvice {
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ApiErrorResponse> onNoSuchElementException(NoSuchElementException exception) {
-        logWarn(exception);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 ApiErrorResponse.builder()
                         .message(exception.getLocalizedMessage())
                         .httpStatus(HttpStatus.NOT_FOUND)
                         .build()
         );
-    }
-
-    //todo посмотреть реализацию АОП для логгирования методов с ошибками
-    private void logWarn(Exception e) {
-        log.warn(e.getMessage(), e);
     }
 }

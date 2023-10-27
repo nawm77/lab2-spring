@@ -1,11 +1,13 @@
 package ru.ilya.lab2_spring.service.impl;
 
+import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.dto.OfferDTO;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.repository.OfferRepository;
 import ru.ilya.lab2_spring.service.OfferService;
+import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -33,6 +35,11 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public OfferDTO update(OfferDTO object) {
+        return null;
+    }
+
+    @Override
+    public OfferDTO save(OfferDTO object) throws IllegalArgumentRequestException, EntityExistsException {
         return null;
     }
 
