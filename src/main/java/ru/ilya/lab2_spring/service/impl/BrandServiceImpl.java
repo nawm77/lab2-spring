@@ -5,17 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.dto.BrandDTO;
-import ru.ilya.lab2_spring.model.Brand;
 import ru.ilya.lab2_spring.mapper.Mapper;
+import ru.ilya.lab2_spring.model.Brand;
 import ru.ilya.lab2_spring.repository.BrandRepository;
 import ru.ilya.lab2_spring.service.BrandService;
-import ru.ilya.lab2_spring.service.util.ValidationUtil;
-import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 @Slf4j
@@ -40,13 +37,14 @@ public class BrandServiceImpl implements BrandService {
                 .toList();
     }
 
-    private void add(BrandDTO b) throws EntityExistsException {
+    private BrandDTO add(BrandDTO b) throws EntityExistsException {
         Optional<Brand> existingBrand = brandRepository.findAllByName(b.getName()).stream().findFirst();
         if(existingBrand.isPresent()){
             throw new EntityExistsException(String.format("Brand " + b + " already exists"));
         }
-        BrandDTO dto = mapper.toDTO(brandRepository.save(mapper.toEntity(b)));
+        BrandDTO dto = mapper.toDTO(brandRepository.saveAndFlush(mapper.toEntity(b)));
         log.info("Create brand {} with id {}", dto, dto.getId());
+        return dto;
     }
 
     @Override
@@ -71,8 +69,8 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void save(BrandDTO brand) throws EntityExistsException {
-        add(brand);
+    public BrandDTO save(BrandDTO brand) throws EntityExistsException {
+        return add(brand);
     }
 
     @Override

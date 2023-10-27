@@ -1,4 +1,4 @@
-package ru.ilya.lab2_spring.service.util;
+package ru.ilya.lab2_spring.model.api;
 
 public class ApiConstants {
     //URLs

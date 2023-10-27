@@ -8,6 +8,7 @@ import ru.ilya.lab2_spring.controller.v1.BrandControllerBase;
 import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
+import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 @RestController
 @Slf4j
@@ -19,7 +20,7 @@ public class BrandControllerImpl extends BrandControllerBase implements BrandCon
     }
 
     @Override
-    public ResponseEntity<BrandDTO> createBrand(BrandDTO brandDTO) {
+    public ResponseEntity<BrandDTO> createBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
         return super.createBrand(brandDTO);
     }
 }

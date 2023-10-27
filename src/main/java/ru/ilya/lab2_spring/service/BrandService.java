@@ -11,7 +11,7 @@ public interface BrandService {
     List<BrandDTO> findAllByName(String name);
     BrandDTO findById(String id);
     void saveAll(List<BrandDTO> list) throws IllegalArgumentRequestException;
-    void save(BrandDTO brand) throws EntityExistsException;
+    BrandDTO save(BrandDTO brand) throws EntityExistsException;
     void deleteById(String id);
     void deleteAll(List<BrandDTO> list);
     void delete(BrandDTO brand);

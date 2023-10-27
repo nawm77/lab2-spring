@@ -3,9 +3,6 @@ package ru.ilya.lab2_spring.util.exception;
 import java.util.List;
 
 public class IllegalArgumentRequestException extends Exception{
-    public IllegalArgumentRequestException() {
-    }
-
     public IllegalArgumentRequestException(String message) {
         super(message);
     }

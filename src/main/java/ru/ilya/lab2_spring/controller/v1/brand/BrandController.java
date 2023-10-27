@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.model.api.ApiErrorResponse;
+import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import static ru.ilya.lab2_spring.service.util.ApiConstants.BRAND_API_V1_PATH;
-import static ru.ilya.lab2_spring.service.util.ApiConstants.JSON_TYPE;
+import static ru.ilya.lab2_spring.model.api.ApiConstants.BRAND_API_V1_PATH;
+import static ru.ilya.lab2_spring.model.api.ApiConstants.JSON_TYPE;
 
 public interface BrandController {
     @Operation(summary = "Создание нового бренда")
@@ -26,5 +27,5 @@ public interface BrandController {
     produces = {JSON_TYPE},
     consumes = {JSON_TYPE},
     method = RequestMethod.POST)
-    ResponseEntity<BrandDTO> createBrand(@RequestBody BrandDTO brandDTO);
+    ResponseEntity<BrandDTO> createBrand(@RequestBody BrandDTO brandDTO) throws IllegalArgumentRequestException;
 }

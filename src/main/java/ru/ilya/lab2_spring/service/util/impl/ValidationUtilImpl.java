@@ -1,14 +1,15 @@
-package ru.ilya.lab2_spring.service.util;
+package ru.ilya.lab2_spring.service.util.impl;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.ilya.lab2_spring.service.util.ValidationUtil;
 
 import java.util.Set;
 
 @Service
-public class ValidationUtilImpl implements ValidationUtil{
+public class ValidationUtilImpl implements ValidationUtil {
     private final Validator validator;
 
     @Autowired

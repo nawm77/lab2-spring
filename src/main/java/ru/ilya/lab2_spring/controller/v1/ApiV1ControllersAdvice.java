@@ -25,7 +25,7 @@ public class ApiV1ControllersAdvice {
         );
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler(IllegalArgumentRequestException.class)
     public ResponseEntity<ApiErrorResponse> onIllegalArgumentException(IllegalArgumentRequestException exception) {
         logWarn(exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
