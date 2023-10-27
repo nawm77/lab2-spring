@@ -1,6 +1,5 @@
 package ru.ilya.lab2_spring.controller.v1;
 
-import jakarta.persistence.EntityExistsException;
 import jakarta.validation.ConstraintViolation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +38,8 @@ public abstract class BrandControllerBase {
         BrandDTO b;
         try {
             b = brandService.save(brandDTO);
-        } catch (EntityExistsException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(b);
     }
@@ -63,8 +60,13 @@ public abstract class BrandControllerBase {
             log.warn("Incorrect entity {}", brandDTO);
             throw new IllegalArgumentRequestException(exceptions);
         }
+        HttpStatus status = brandService.findAllByName(brandDTO.getName()).isEmpty() ? HttpStatus.CREATED : HttpStatus.ACCEPTED;
         brandService.update(brandDTO);
-        return brandService.findAllByName(brandDTO.getName()).isEmpty() ?
-                ResponseEntity.status(HttpStatus.CREATED).body(brandDTO) : ResponseEntity.status(HttpStatus.ACCEPTED).body(brandDTO);
+        return ResponseEntity.status(status).body(brandDTO);
+    }
+
+    protected ResponseEntity<?> deleteBrand(String id) {
+        brandService.deleteById(id);
+        return ResponseEntity.ok(id);
     }
 }

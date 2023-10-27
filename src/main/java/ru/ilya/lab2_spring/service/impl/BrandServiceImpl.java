@@ -60,8 +60,9 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public BrandDTO save(BrandDTO brand) throws EntityExistsException {
-        log.info("Create brand {} with id {} and name {}", brand, brand.getId(), brand.getName());
-        return saveOrUpdate(brand);
+        BrandDTO dto = saveOrUpdate(brand);
+        log.info("Create brand {} with id {} and name {}", dto, dto.getId(), dto.getName());
+        return dto;
     }
 
     @Override
@@ -99,6 +100,10 @@ public class BrandServiceImpl implements BrandService {
     }
 
     private BrandDTO saveOrUpdate(BrandDTO b) throws EntityExistsException {
-        return mapper.toDTO(brandRepository.saveAndFlush(mapper.toEntity(b)));
+        try {
+            return mapper.toDTO(brandRepository.saveAndFlush(mapper.toEntity(b)));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
+        }
     }
 }

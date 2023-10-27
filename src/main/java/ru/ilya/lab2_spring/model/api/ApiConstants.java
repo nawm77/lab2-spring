@@ -11,4 +11,5 @@ public class ApiConstants {
 
     //Content types
     public static final String JSON_TYPE = "application/json";
+    public static final String ALL_TYPE = "*/*";
 }

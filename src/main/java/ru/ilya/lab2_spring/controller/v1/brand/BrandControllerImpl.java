@@ -35,4 +35,9 @@ public class BrandControllerImpl extends BrandControllerBase implements BrandCon
     public ResponseEntity<BrandDTO> updateBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
         return super.updateBrand(brandDTO);
     }
+
+    @Override
+    public ResponseEntity<?> deleteBrand(String id) {
+        return super.deleteBrand(id);
+    }
 }

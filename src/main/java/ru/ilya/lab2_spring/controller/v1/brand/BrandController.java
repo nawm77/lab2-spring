@@ -18,8 +18,7 @@ import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.util.List;
 
-import static ru.ilya.lab2_spring.model.api.ApiConstants.BRAND_API_V1_PATH;
-import static ru.ilya.lab2_spring.model.api.ApiConstants.JSON_TYPE;
+import static ru.ilya.lab2_spring.model.api.ApiConstants.*;
 
 public interface BrandController {
     @Operation(summary = "Создание нового бренда")
@@ -43,7 +42,9 @@ public interface BrandController {
     produces = {JSON_TYPE},
     consumes = {JSON_TYPE},
     method = RequestMethod.GET)
-    ResponseEntity<List<BrandDTO>> getBrand(@Parameter(in = ParameterIn.QUERY, description = "ID бренда", schema = @Schema(defaultValue = "-1")) @RequestParam(value = "brandId", required = false, defaultValue = "-1") String brandId);
+    ResponseEntity<List<BrandDTO>> getBrand(
+            @Parameter(in = ParameterIn.QUERY, description = "ID бренда", schema = @Schema(defaultValue = "-1")) @RequestParam(value = "brandId", required = false, defaultValue = "-1") String brandId
+    );
 
     @Operation(summary = "Редактирование бренда  Если бренд отсутствует, он будет создан")
     @ApiResponses(value = {
@@ -56,4 +57,17 @@ public interface BrandController {
     consumes = {JSON_TYPE},
     method = RequestMethod.PUT)
     ResponseEntity<BrandDTO> updateBrand(@RequestBody BrandDTO brandDTO) throws IllegalArgumentRequestException;
+
+    @Operation(summary = "Удаление бренда")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Бренд удален", content = @Content(mediaType = JSON_TYPE)),
+            @ApiResponse(responseCode = "404", description = "Бренд не найден", content = @Content(mediaType = JSON_TYPE))
+    })
+    @RequestMapping(value = BRAND_API_V1_PATH + "/**",
+    produces = {JSON_TYPE},
+    consumes = {ALL_TYPE},
+    method = RequestMethod.DELETE)
+    ResponseEntity<?> deleteBrand(
+            @Parameter(in = ParameterIn.QUERY, description = "ID бренда", schema = @Schema()) @RequestParam(value = "brandId") String id
+    );
 }
