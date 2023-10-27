@@ -1,16 +1,15 @@
 package ru.ilya.lab2_spring.service;
 
-import ru.ilya.lab2_spring.entity.Offer;
+import ru.ilya.lab2_spring.dto.OfferDTO;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface OfferService {
-    List<Offer> findAll();
-    Offer findById(UUID id);
-    void addOffer(Offer offer);
-    void addAll(List<Offer> list);
-    void deleteOffer(Offer offer);
-    void deleteOfferById(UUID id);
-    void deleteAll(List<Offer> list);
+    List<OfferDTO> findAll();
+    OfferDTO findById(String id);
+    void addOffer(OfferDTO offer);
+    void addAll(List<OfferDTO> list);
+    void deleteOffer(OfferDTO offer);
+    void deleteOfferById(String id);
+    void deleteAll(List<OfferDTO> list);
 }

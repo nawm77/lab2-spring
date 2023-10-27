@@ -1,21 +1,31 @@
 package ru.ilya.lab2_spring.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @Builder
 public class ModelDTO {
-    private UUID id;
+    private String id;
+    @NotNull
+    @NotEmpty
+    @Length(min = 1, message = "Model name must contains 1 character minimum")
     private String name;
+    @NotEmpty
+    @NotNull(message = "Category must be chosen")
+    @Length(min = 1, message = "Incorrect category")
     private String category;
     private String imageUrl;
     private Integer startYear;
     private Integer endYear;
     private LocalDateTime created;
     private LocalDateTime modified;
+    @NotEmpty
+    @NotNull
     private BrandDTO brandDTO;
 }

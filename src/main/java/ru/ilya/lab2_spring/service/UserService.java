@@ -1,16 +1,11 @@
 package ru.ilya.lab2_spring.service;
 
-import ru.ilya.lab2_spring.entity.User;
+import ru.ilya.lab2_spring.dto.UserDTO;
 
-import java.util.List;
-import java.util.UUID;
-
-public interface UserService {
-    User findById(UUID id);
-    User findByUsername(String username);
-    List<User> findAll();
-    void createUser(User user);
-    void updateUser(User user);
-    void deleteUser(User user);
-    void deleteUserById(UUID id);
+public interface UserService extends BaseService<UserDTO> {
+    UserDTO findByUsername(String username);
+    void createUser(UserDTO user);
+    void updateUser(UserDTO user);
+    void deleteUser(UserDTO user);
+    void deleteUserById(String id);
 }

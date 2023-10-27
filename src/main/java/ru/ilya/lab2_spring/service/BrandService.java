@@ -1,16 +1,18 @@
 package ru.ilya.lab2_spring.service;
 
-import ru.ilya.lab2_spring.entity.Brand;
+import jakarta.persistence.EntityExistsException;
+import ru.ilya.lab2_spring.dto.BrandDTO;
+import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface BrandService {
-    List<Brand> findAll();
-    Brand findById(UUID id);
-    void saveAll(List<Brand> list);
-    void save(Brand brand);
-    void deleteById(UUID id);
-    void deleteAll(List<Brand> list);
-    void delete(Brand brand);
+    List<BrandDTO> findAll();
+    List<BrandDTO> findAllByName(String name);
+    BrandDTO findById(String id);
+    void saveAll(List<BrandDTO> list) throws IllegalArgumentRequestException;
+    BrandDTO save(BrandDTO brand) throws EntityExistsException;
+    void deleteById(String id);
+    void deleteAll(List<BrandDTO> list);
+    void delete(BrandDTO brand);
 }
