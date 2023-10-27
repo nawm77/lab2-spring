@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.model.viewModel.BrandModelViewModel;
+import ru.ilya.lab2_spring.multithreading.ThreadPoolFactory;
 import ru.ilya.lab2_spring.repository.BrandRepository;
 import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
@@ -18,6 +19,7 @@ import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ExecutorService;
 
 @Service
 @Slf4j
@@ -26,6 +28,7 @@ public class BrandServiceImpl implements BrandService {
     private final Mapper mapper;
     private final List<String> exceptions = new ArrayList<>();
     private final ValidationUtil validationUtil;
+    private final ExecutorService executorService = ThreadPoolFactory.getDefaultPool();
 
     @Autowired
     public BrandServiceImpl(Mapper mapper, ValidationUtil validationUtil) {
@@ -62,8 +65,8 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public void saveAll(List<BrandDTO> list) throws IllegalArgumentRequestException {
-        for( BrandDTO dto : list){
-            save(dto);
+        for (BrandDTO dto : list) {
+            executorService.submit(() -> save(dto));
         }
     }
 
@@ -79,14 +82,14 @@ public class BrandServiceImpl implements BrandService {
         try {
             brandRepository.deleteById(id);
             log.info("Delete brand with id {}", id);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
         }
     }
 
     @Override
     public BrandDTO update(BrandDTO brandDTO) throws IllegalArgumentRequestException {
-        if(brandRepository.findById(brandDTO.getId()).isPresent()){
+        if (brandRepository.findById(brandDTO.getId()).isPresent()) {
             log.info("Update brand {}", brandDTO);
         }
         return saveOrUpdate(brandDTO);
@@ -94,7 +97,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public void deleteAll(List<BrandDTO> brandDTOList) throws IllegalArgumentRequestException {
-        for (BrandDTO dto : brandDTOList){
+        for (BrandDTO dto : brandDTOList) {
             delete(dto);
         }
     }
@@ -103,7 +106,7 @@ public class BrandServiceImpl implements BrandService {
     public void delete(BrandDTO brand) throws IllegalArgumentRequestException {
         try {
             brandRepository.delete(mapper.toEntity(brand));
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new IllegalArgumentRequestException(e.getLocalizedMessage());
         }
     }
@@ -141,7 +144,7 @@ public class BrandServiceImpl implements BrandService {
         }
         try {
             return mapper.toDTO(brandRepository.saveAndFlush(mapper.toEntity(brandDTO)));
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
         }
     }

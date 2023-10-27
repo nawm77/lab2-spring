@@ -31,7 +31,7 @@ public interface BrandController {
     method = RequestMethod.POST)
     ResponseEntity<BrandDTO> createBrand(@RequestBody BrandDTO brandDTO) throws IllegalArgumentRequestException;
 
-    @Operation(summary = "Получение списка всех брендов / одного бренда")
+    @Operation(summary = "Получение списка всех брендов / одного бренда с возможностью получить список моделей бренда или брендов")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Бренд успешно найден", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = BrandDTO.class))),
             @ApiResponse(responseCode = "404", description = "Бренд не найден")
