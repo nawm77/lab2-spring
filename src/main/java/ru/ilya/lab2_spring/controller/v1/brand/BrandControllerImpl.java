@@ -8,8 +8,6 @@ import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import java.util.List;
-
 @RestController
 @Slf4j
 public class BrandControllerImpl extends BrandControllerBase implements BrandController{
@@ -25,8 +23,8 @@ public class BrandControllerImpl extends BrandControllerBase implements BrandCon
     }
 
     @Override
-    public ResponseEntity<List<BrandDTO>> getBrand(String brandId) {
-        return super.getBrand(brandId);
+    public ResponseEntity<?> getBrand(String brandId, Boolean withModels) {
+        return super.getBrand(brandId, withModels);
     }
 
     @Override

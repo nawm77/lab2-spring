@@ -26,7 +26,7 @@ public class Model extends BaseEntity{
     private Integer startYear;
     private Integer endYear;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
     private Brand brand;
     @OneToMany(mappedBy = "model", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

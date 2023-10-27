@@ -2,6 +2,7 @@ package ru.ilya.lab2_spring.service;
 
 import jakarta.persistence.EntityExistsException;
 import ru.ilya.lab2_spring.dto.BrandDTO;
+import ru.ilya.lab2_spring.model.viewModel.BrandModelViewModel;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface BrandService extends BaseService<BrandDTO> {
     void deleteById(String id);
     void deleteAll(List<BrandDTO> list) throws IllegalArgumentRequestException;
     void delete(BrandDTO brand) throws IllegalArgumentRequestException;
+    List<BrandModelViewModel> findAllWithModels();
+    BrandModelViewModel findByIdWithModel(String id);
 }

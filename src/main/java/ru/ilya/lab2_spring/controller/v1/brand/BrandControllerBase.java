@@ -9,6 +9,7 @@ import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -21,6 +22,7 @@ public abstract class BrandControllerBase {
     }
 
     protected ResponseEntity<BrandDTO> createBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
+        brandDTO.setModified(LocalDateTime.now());
         BrandDTO b;
         try {
             b = brandService.save(brandDTO);
@@ -30,14 +32,24 @@ public abstract class BrandControllerBase {
         return ResponseEntity.status(HttpStatus.CREATED).body(b);
     }
 
-    protected ResponseEntity<List<BrandDTO>> getBrand(String id){
+    protected ResponseEntity<?> getBrand(String id, Boolean withModels){
         if("-1".equals(id)){
-            return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findAll());
+            if(!withModels) {
+                return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findAll());
+            } else {
+                return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findAllWithModels());
+            }
+        } else{
+            if(!withModels) {
+                return ResponseEntity.status(HttpStatus.FOUND).body(List.of(brandService.findById(id)));
+            } else {
+                return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findByIdWithModel(id));
+            }
         }
-        return ResponseEntity.status(HttpStatus.FOUND).body(List.of(brandService.findById(id)));
     }
 
     protected ResponseEntity<BrandDTO> updateBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
+        brandDTO.setModified(LocalDateTime.now());
         HttpStatus status = brandService.findAllByName(brandDTO.getName()).isEmpty() ? HttpStatus.CREATED : HttpStatus.ACCEPTED;
         brandService.update(brandDTO);
         return ResponseEntity.status(status).body(brandDTO);

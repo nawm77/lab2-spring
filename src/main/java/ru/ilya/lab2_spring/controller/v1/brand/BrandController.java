@@ -16,14 +16,12 @@ import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.model.api.ApiErrorResponse;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import java.util.List;
-
 import static ru.ilya.lab2_spring.model.api.ApiConstants.*;
 
 public interface BrandController {
     @Operation(summary = "Создание нового бренда")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Бренд успешно создан", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = BrandDTO.class))),
+            @ApiResponse(responseCode = "201", description = "Бренд успешно создан", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = BrandDTO.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = ApiErrorResponse.class))),
             @ApiResponse(responseCode = "409", description = "Бренд уже существует", content = @Content(mediaType = JSON_TYPE, schema = @Schema(implementation = ApiErrorResponse.class)))
     })
@@ -42,8 +40,9 @@ public interface BrandController {
     produces = {JSON_TYPE},
     consumes = {JSON_TYPE},
     method = RequestMethod.GET)
-    ResponseEntity<List<BrandDTO>> getBrand(
-            @Parameter(in = ParameterIn.QUERY, description = "ID бренда", schema = @Schema(defaultValue = "-1")) @RequestParam(value = "brandId", required = false, defaultValue = "-1") String brandId
+    ResponseEntity<?> getBrand(
+            @Parameter(in = ParameterIn.QUERY, description = "ID бренда", schema = @Schema(defaultValue = "-1")) @RequestParam(value = "brandId", required = false, defaultValue = "-1") String brandId,
+            @Parameter(in = ParameterIn.QUERY, description = "Отображение брендов вместе с моделями", schema = @Schema(defaultValue = "false")) @RequestParam(value = "withModels", required = false, defaultValue = "false") Boolean withModels
     );
 
     @Operation(summary = "Редактирование бренда  Если бренд отсутствует, он будет создан")

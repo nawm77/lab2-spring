@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.mapper.Mapper;
+import ru.ilya.lab2_spring.model.viewModel.BrandModelViewModel;
 import ru.ilya.lab2_spring.repository.BrandRepository;
 import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
@@ -105,6 +106,28 @@ public class BrandServiceImpl implements BrandService {
         } catch (Exception e){
             throw new IllegalArgumentRequestException(e.getLocalizedMessage());
         }
+    }
+
+    @Override
+    public List<BrandModelViewModel> findAllWithModels() {
+        return brandRepository.findAll().stream()
+                .map(b -> BrandModelViewModel.builder()
+                        .brandDTO(mapper.toDTO(b))
+                        .modelDTOList(b.getModel().stream().map(mapper::toDTO).toList())
+                        .build())
+                .toList();
+    }
+
+    @Override
+    public BrandModelViewModel findByIdWithModel(String id) {
+        return brandRepository.findById(id).stream()
+                .map(b -> BrandModelViewModel.builder()
+                        .brandDTO(mapper.toDTO(b))
+                        .modelDTOList(b.getModel().stream()
+                                .map(mapper::toDTO)
+                                .toList())
+                        .build())
+                .findFirst().orElseThrow(() -> new NoSuchElementException("No such brand with id " + id));
     }
 
     private BrandDTO saveOrUpdate(BrandDTO brandDTO) throws EntityExistsException, IllegalArgumentRequestException {

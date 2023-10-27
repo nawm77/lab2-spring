@@ -46,6 +46,13 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
+    public List<ModelDTO> findAllByName(String name) {
+        return modelRepository.findAllByName(name).stream()
+                .map(mapper::toDTO)
+                .toList();
+    }
+
+    @Override
     public void addModel(ModelDTO model) {
         modelRepository.save(mapper.toEntity(model));
     }
