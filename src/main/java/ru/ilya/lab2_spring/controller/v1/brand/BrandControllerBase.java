@@ -1,6 +1,5 @@
 package ru.ilya.lab2_spring.controller.v1.brand;
 
-import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,6 @@ public abstract class BrandControllerBase {
     }
 
     protected ResponseEntity<?> getBrand(String id, Boolean withModels) {
-        Gauge.builder("metric", this, (v) -> Math.random()).register(meterRegistry);
         if ("-1".equals(id)) {
             if (!withModels) {
                 return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findAll());

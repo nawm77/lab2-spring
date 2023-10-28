@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: cardb
   prometheus:
-    image: prom/prometheus
+    image: bitnami/prometheus
     container_name: prometheus_spring
     ports:
       - "9090:9090"
@@ -38,4 +38,3 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: root
       SPRING_DATASOURCE_URL: jdbc:postgresql://cardb:5432/cardb
-

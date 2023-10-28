@@ -50,28 +50,28 @@ public class OfferServiceImpl implements OfferService {
                 .toList();
     }
 
-    @Override
-    public void addOffer(OfferDTO offer) {
-        offerRepository.save(mapper.toEntity(offer));
-    }
-
-    @Override
-    public void addAll(List<OfferDTO> list) {
-        offerRepository.saveAll(list.stream().map(mapper::toEntity).toList());
-    }
-
-    @Override
-    public void deleteOffer(OfferDTO offer) {
-        offerRepository.delete(mapper.toEntity(offer));
-    }
-
-    @Override
-    public void deleteOfferById(String id) {
-        offerRepository.deleteById(id);
-    }
-
-    @Override
-    public void deleteAll(List<OfferDTO> list) {
-        offerRepository.deleteAll(list.stream().map(mapper::toEntity).toList());
-    }
+//    @Override
+//    public void addOffer(OfferDTO offer) {
+//        offerRepository.save(mapper.toEntity(offer));
+//    }
+//
+//    @Override
+//    public void addAll(List<OfferDTO> list) {
+//        offerRepository.saveAll(list.stream().map(mapper::toEntity).toList());
+//    }
+//
+//    @Override
+//    public void deleteOffer(OfferDTO offer) {
+//        offerRepository.delete(mapper.toEntity(offer));
+//    }
+//
+//    @Override
+//    public void deleteOfferById(String id) {
+//        offerRepository.deleteById(id);
+//    }
+//
+//    @Override
+//    public void deleteAll(List<OfferDTO> list) {
+//        offerRepository.deleteAll(list.stream().map(mapper::toEntity).toList());
+//    }
 }
