@@ -1,13 +1,14 @@
 package ru.ilya.lab2_spring.service;
 
 import ru.ilya.lab2_spring.dto.UserDTO;
+import ru.ilya.lab2_spring.model.viewModel.UserOfferViewModel;
+
+import java.util.List;
 
 public interface UserService extends BaseService<UserDTO> {
-    UserDTO findByUsername(String username);
+    List<UserDTO> findAllByUsername(String username);
 
-    void createUser(UserDTO user);
+    List<UserOfferViewModel> findAllWithOffers();
 
-    void updateUser(UserDTO user);
-
-    void deleteUser(UserDTO user);
+    UserOfferViewModel findByIdWithOffers(String userId);
 }

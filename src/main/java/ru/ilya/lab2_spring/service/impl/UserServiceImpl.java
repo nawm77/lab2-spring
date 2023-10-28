@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.ilya.lab2_spring.dto.UserDTO;
 import ru.ilya.lab2_spring.mapper.Mapper;
+import ru.ilya.lab2_spring.model.viewModel.UserOfferViewModel;
 import ru.ilya.lab2_spring.repository.UserRepository;
 import ru.ilya.lab2_spring.service.UserService;
+import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.util.List;
@@ -20,11 +22,13 @@ import java.util.NoSuchElementException;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final Mapper mapper;
+    private final ValidationUtil validationUtil;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, Mapper mapper) {
+    public UserServiceImpl(UserRepository userRepository, Mapper mapper, ValidationUtil validationUtil) {
         this.userRepository = userRepository;
         this.mapper = mapper;
+        this.validationUtil = validationUtil;
     }
 
     @Override
@@ -37,24 +41,65 @@ public class UserServiceImpl implements UserService {
     public void deleteById(String id) {
         try {
             userRepository.deleteById(id);
+            log.info("Delete user with id {}", id);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
         }
     }
 
     @Override
-    public UserDTO update(UserDTO object) {
-        return null;
+    public UserDTO update(UserDTO userDTO) throws IllegalArgumentRequestException {
+        if(userRepository.findById(userDTO.getId()).isPresent()){
+            log.info("Update user {}", userDTO);
+        }
+        return saveOrUpdate(userDTO);
     }
 
     @Override
     public UserDTO save(UserDTO object) throws IllegalArgumentRequestException, EntityExistsException {
-        return null;
+        UserDTO dto = saveOrUpdate(object);
+        log.info("Create user {} with id {} and username {}", dto, dto.getId(), dto.getUsername());
+        return dto;
+    }
+
+    private UserDTO saveOrUpdate(UserDTO userDTO) throws EntityExistsException, IllegalArgumentRequestException {
+        //todo затестить сохранение с несколькими оффермаи и тд  то есть с вложенными сущностями
+        validationUtil.validateDTO(userDTO);
+        try {
+            return mapper.toDTO(userRepository.saveAndFlush(mapper.toEntity(userDTO)));
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
+        }
     }
 
     @Override
-    public UserDTO findByUsername(String username) {
-        return mapper.toDTO(userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("No such user " + username)));
+    public List<UserDTO> findAllByUsername(String username) {
+        return userRepository.findAllByUsername(username)
+                .stream()
+                .map(mapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    public List<UserOfferViewModel> findAllWithOffers() {
+        return userRepository.findAll().stream()
+                .map(u -> UserOfferViewModel.builder()
+                        .userDTO(mapper.toDTO(u))
+                        .offerDTOList(u.getOfferList().stream().map(mapper::toDTO).toList())
+                        .build())
+                .toList();
+    }
+
+    @Override
+    public UserOfferViewModel findByIdWithOffers(String userId) {
+        return userRepository.findById(userId).stream()
+                .map(u -> UserOfferViewModel.builder()
+                        .userDTO(mapper.toDTO(u))
+                        .offerDTOList(u.getOfferList().stream()
+                                .map(mapper::toDTO)
+                                .toList())
+                        .build())
+                .findFirst().orElseThrow(() -> new NoSuchElementException("No such user with id " + userId));
     }
 
     @Override
@@ -62,20 +107,5 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream()
                 .map(mapper::toDTO)
                 .toList();
-    }
-
-    @Override
-    public void createUser(UserDTO user) {
-        userRepository.save(mapper.toEntity(user));
-    }
-
-    @Override
-    public void updateUser(UserDTO user) {
-        createUser(user);
-    }
-
-    @Override
-    public void deleteUser(UserDTO user) {
-        userRepository.delete(mapper.toEntity(user));
     }
 }
