@@ -6,4 +6,5 @@ import ru.ilya.lab2_spring.model.Offer;
 
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, String> {
+    boolean existsById(String id);
 }

@@ -1,8 +1,9 @@
 FROM maven:3.8.3-openjdk-17-slim as builder
 WORKDIR /build
 COPY . .
-RUN mvn package -DskipTests
+RUN mvn clean package
 FROM bellsoft/liberica-openjdk-alpine-musl
 WORKDIR /app
 COPY --from=builder /build/target/springlab.jar .
+RUN apk update && apk upgrade
 CMD java -jar springlab.jar

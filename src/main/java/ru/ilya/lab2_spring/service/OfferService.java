@@ -7,5 +7,5 @@ import java.util.List;
 public interface OfferService extends BaseService<OfferDTO> {
     List<OfferDTO> findAll();
 
-    OfferDTO findById(String id);
+    Boolean existsById(String id);
 }
