@@ -1,7 +1,6 @@
 package ru.ilya.lab2_spring.service.impl;
 
 import jakarta.persistence.EntityExistsException;
-import jakarta.validation.ConstraintViolation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,6 @@ import ru.ilya.lab2_spring.service.OfferService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,7 +22,6 @@ public class OfferServiceImpl implements OfferService {
     private final OfferRepository offerRepository;
     private final Mapper mapper;
     private final ValidationUtil validationUtil;
-    private final List<String> exceptions = new ArrayList<>();
 
     @Autowired
     public OfferServiceImpl(OfferRepository offerRepository, Mapper mapper, ValidationUtil validationUtil) {
@@ -76,14 +73,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     private OfferDTO saveOrUpdate(OfferDTO offerDTO) throws EntityExistsException, IllegalArgumentRequestException {
-        if (!validationUtil.isValid(offerDTO)) {
-            exceptions.clear();
-            validationUtil.violations(offerDTO).stream()
-                    .map(ConstraintViolation::getMessage)
-                    .forEach(exceptions::add);
-            log.warn("Incorrect entity {}", offerDTO);
-            throw new IllegalArgumentRequestException(exceptions);
-        }
+        validationUtil.validateDTO(offerDTO);
         try {
             return mapper.toDTO(offerRepository.saveAndFlush(mapper.toEntity(offerDTO)));
         } catch (Exception e) {

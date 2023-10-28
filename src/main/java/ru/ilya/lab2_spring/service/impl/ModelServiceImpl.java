@@ -1,6 +1,5 @@
 package ru.ilya.lab2_spring.service.impl;
 
-import jakarta.validation.ConstraintViolation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import ru.ilya.lab2_spring.service.ModelService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -23,7 +21,6 @@ public class ModelServiceImpl implements ModelService {
     private ModelRepository modelRepository;
     private final Mapper mapper;
     private final ValidationUtil validationUtil;
-    private final List<String> exceptions = new ArrayList<>();
 
     @Autowired
     public ModelServiceImpl(Mapper mapper, ValidationUtil validationUtil) {
@@ -82,14 +79,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     private ModelDTO saveOrUpdate(ModelDTO model) throws IllegalArgumentRequestException {
-        if (!validationUtil.isValid(model)) {
-            exceptions.clear();
-            validationUtil.violations(model).stream()
-                    .map(ConstraintViolation::getMessage)
-                    .forEach(exceptions::add);
-            log.warn("Incorrect entity {}", model);
-            throw new IllegalArgumentRequestException(exceptions);
-        }
+        validationUtil.validateDTO(model);
         try {
             return mapper.toDTO(modelRepository.save(mapper.toEntity(model)));
         } catch (Exception e) {

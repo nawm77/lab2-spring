@@ -1,7 +1,6 @@
 package ru.ilya.lab2_spring.service.impl;
 
 import jakarta.persistence.EntityExistsException;
-import jakarta.validation.ConstraintViolation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,23 +9,19 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.mapper.Mapper;
 import ru.ilya.lab2_spring.model.viewModel.BrandModelViewModel;
-import ru.ilya.lab2_spring.multithreading.ThreadPoolFactory;
 import ru.ilya.lab2_spring.repository.BrandRepository;
 import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.ExecutorService;
 
 @Service
 @Slf4j
 public class BrandServiceImpl implements BrandService {
     private BrandRepository brandRepository;
     private final Mapper mapper;
-    private final List<String> exceptions = new ArrayList<>();
     private final ValidationUtil validationUtil;
 
     @Autowired
@@ -119,14 +114,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     private BrandDTO saveOrUpdate(BrandDTO brandDTO) throws EntityExistsException, IllegalArgumentRequestException {
-        if (!validationUtil.isValid(brandDTO)) {
-            exceptions.clear();
-            validationUtil.violations(brandDTO).stream()
-                    .map(ConstraintViolation::getMessage)
-                    .forEach(exceptions::add);
-            log.warn("Incorrect entity {}", brandDTO);
-            throw new IllegalArgumentRequestException(exceptions);
-        }
+        validationUtil.validateDTO(brandDTO);
         try {
             return mapper.toDTO(brandRepository.saveAndFlush(mapper.toEntity(brandDTO)));
         } catch (Exception e) {
