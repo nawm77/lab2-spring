@@ -1,5 +1,6 @@
 package ru.ilya.lab2_spring.controller.v1.brand;
 
+import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static ru.ilya.lab2_spring.meter.MeterConstants.BRANDS_TOTAL_COUNT;
 
 @Slf4j
 public abstract class BrandControllerBase {
@@ -29,6 +32,7 @@ public abstract class BrandControllerBase {
         BrandDTO b;
         try {
             b = brandService.save(brandDTO);
+            Counter.builder(BRANDS_TOTAL_COUNT).description("Total count of created brands").register(meterRegistry).increment();
             return ResponseEntity.status(HttpStatus.CREATED).body(b);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());

@@ -23,7 +23,9 @@ public class MapperImpl implements Mapper {
 
     @Override
     public ModelDTO toDTO(Model model) {
-        return modelMapper.map(model, ModelDTO.class);
+        ModelDTO dto = modelMapper.map(model, ModelDTO.class);
+        dto.setBrandDTO(toDTO(model.getBrand()));
+        return dto;
     }
 
     @Override

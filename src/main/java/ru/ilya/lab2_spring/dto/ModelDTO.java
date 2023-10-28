@@ -29,7 +29,5 @@ public class ModelDTO {
     private Integer endYear;
     private LocalDateTime created;
     private LocalDateTime modified;
-    @NotEmpty
-    @NotNull
     private BrandDTO brandDTO;
 }

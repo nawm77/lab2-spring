@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.dto.ModelDTO;
 import ru.ilya.lab2_spring.mapper.Mapper;
+import ru.ilya.lab2_spring.model.Model;
 import ru.ilya.lab2_spring.repository.ModelRepository;
+import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.service.ModelService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
@@ -21,11 +24,13 @@ public class ModelServiceImpl implements ModelService {
     private ModelRepository modelRepository;
     private final Mapper mapper;
     private final ValidationUtil validationUtil;
+    private final BrandService brandService;
 
     @Autowired
-    public ModelServiceImpl(Mapper mapper, ValidationUtil validationUtil) {
+    public ModelServiceImpl(Mapper mapper, ValidationUtil validationUtil, BrandService brandService) {
         this.mapper = mapper;
         this.validationUtil = validationUtil;
+        this.brandService = brandService;
     }
 
     @Autowired
@@ -79,9 +84,19 @@ public class ModelServiceImpl implements ModelService {
     }
 
     private ModelDTO saveOrUpdate(ModelDTO model) throws IllegalArgumentRequestException {
+        BrandDTO brandDTO = model.getBrandDTO();
+        try {
+            brandDTO = brandService.findAllByName(model.getBrandDTO().getName()).stream().findFirst().get();
+            log.info("Found brandDTO {}", brandDTO);
+        } catch (Exception e) {
+            log.info("BrandDTO not found. Saving BrandDTO {}", brandDTO);
+            brandDTO = brandService.save(model.getBrandDTO());
+        }
+        Model modelEntity = mapper.toEntity(model);
+        modelEntity.setBrand(mapper.toEntity(brandDTO));
         validationUtil.validateDTO(model);
         try {
-            return mapper.toDTO(modelRepository.save(mapper.toEntity(model)));
+            return mapper.toDTO(modelRepository.save(modelEntity));
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
         }

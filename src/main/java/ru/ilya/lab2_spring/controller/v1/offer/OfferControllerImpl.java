@@ -1,5 +1,6 @@
 package ru.ilya.lab2_spring.controller.v1.offer;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,8 +11,8 @@ import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 @RestController
 public class OfferControllerImpl extends OfferControllerBase implements  OfferController{
     @Autowired
-    protected OfferControllerImpl(OfferService offerService) {
-        super(offerService);
+    protected OfferControllerImpl(OfferService offerService, MeterRegistry meterRegistry) {
+        super(offerService, meterRegistry);
     }
 
     @Override
