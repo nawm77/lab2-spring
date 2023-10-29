@@ -42,7 +42,7 @@ public interface ModelController {
     })
     @RequestMapping(value = MODEL_API_V1_PATH + "/**",
             produces = {JSON_TYPE},
-            consumes = {JSON_TYPE},
+            consumes = {ALL_TYPE},
             method = RequestMethod.GET)
     ResponseEntity<?> getModel(
             @Parameter(in = ParameterIn.QUERY, description = "ID модели", schema = @Schema(defaultValue = "-1"))
@@ -60,7 +60,7 @@ public interface ModelController {
     })
     @RequestMapping(value = MODEL_API_V1_PATH + "/**",
             produces = {JSON_TYPE},
-            consumes = {JSON_TYPE},
+            consumes = {ALL_TYPE},
             method = RequestMethod.PUT)
     ResponseEntity<ModelDTO> updateModel(@RequestBody ModelDTO modelDTO) throws IllegalArgumentRequestException;
 

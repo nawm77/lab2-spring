@@ -40,8 +40,7 @@ public abstract class ModelControllerBase {
     protected ResponseEntity<ModelDTO> updateModel(ModelDTO modelDTO) throws IllegalArgumentRequestException {
         modelDTO.setModified(LocalDateTime.now());
         HttpStatus status = modelService.findAllByName(modelDTO.getName()).isEmpty() ? HttpStatus.CREATED : HttpStatus.ACCEPTED;
-        modelService.update(modelDTO);
-        return ResponseEntity.status(status).body(modelDTO);
+        return ResponseEntity.status(status).body(modelService.update(modelDTO));
     }
 
     protected ResponseEntity<?> deleteModel(String id) {

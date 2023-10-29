@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.ilya.lab2_spring.dto.*;
 import ru.ilya.lab2_spring.model.*;
 import ru.ilya.lab2_spring.mapper.Mapper;
+import ru.ilya.lab2_spring.model.viewModel.ModelWithOutBrandView;
 
 @Service
 public class MapperImpl implements Mapper {
@@ -66,5 +67,10 @@ public class MapperImpl implements Mapper {
     @Override
     public UserRoleDTO toDTO(UserRole userRole) {
         return modelMapper.map(userRole, UserRoleDTO.class);
+    }
+
+    @Override
+    public ModelWithOutBrandView toView(Model model) {
+        return modelMapper.map(model, ModelWithOutBrandView.class);
     }
 }

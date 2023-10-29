@@ -2,6 +2,7 @@ package ru.ilya.lab2_spring.mapper;
 
 import ru.ilya.lab2_spring.dto.*;
 import ru.ilya.lab2_spring.model.*;
+import ru.ilya.lab2_spring.model.viewModel.ModelWithOutBrandView;
 
 public interface Mapper {
     Model toEntity(ModelDTO modelDTO);
@@ -23,4 +24,5 @@ public interface Mapper {
     UserRole toEntity(UserRoleDTO userRoleDTO);
 
     UserRoleDTO toDTO(UserRole userRole);
+    ModelWithOutBrandView toView(Model model);
 }

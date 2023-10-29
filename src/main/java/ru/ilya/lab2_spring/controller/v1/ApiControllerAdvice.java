@@ -25,7 +25,7 @@ public class ApiControllerAdvice {
     }
 
     @ExceptionHandler(IllegalArgumentRequestException.class)
-    public ResponseEntity<ApiErrorResponse> onIllegalArgumentException(IllegalArgumentRequestException exception) {
+    public ResponseEntity<ApiErrorResponse> onIllegalArgumentRequestException(IllegalArgumentRequestException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ApiErrorResponse.builder()
                         .message(exception.getLocalizedMessage())
@@ -40,6 +40,16 @@ public class ApiControllerAdvice {
                 ApiErrorResponse.builder()
                         .message(exception.getLocalizedMessage())
                         .httpStatus(HttpStatus.NOT_FOUND)
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiErrorResponse> onIllegalArgumentException(IllegalArgumentException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ApiErrorResponse.builder()
+                        .message(exception.getLocalizedMessage())
+                        .httpStatus(HttpStatus.BAD_REQUEST)
                         .build()
         );
     }

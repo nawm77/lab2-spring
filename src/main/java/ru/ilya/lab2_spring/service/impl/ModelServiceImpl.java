@@ -56,7 +56,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public ModelDTO update(ModelDTO model) throws IllegalArgumentRequestException {
-        if (modelRepository.findById(model.getId()).isPresent()) {
+        if (!modelRepository.findAllByName(model.getName()).isEmpty()) {
             log.info("Update model {}", model);
         }
         return saveOrUpdate(model);

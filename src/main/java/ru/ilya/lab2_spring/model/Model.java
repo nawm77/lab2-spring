@@ -26,10 +26,10 @@ public class Model extends BaseEntity {
     private Integer startYear;
     private Integer endYear;
 
-    @ManyToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "brand_id")
     private Brand brand;
-    @OneToMany(mappedBy = "model", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "model", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Offer> offerList;
 }

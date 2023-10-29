@@ -96,7 +96,8 @@ public class BrandServiceImpl implements BrandService {
         return brandRepository.findAll().stream()
                 .map(b -> BrandModelViewModel.builder()
                         .brandDTO(mapper.toDTO(b))
-                        .modelDTOList(b.getModel().stream().map(mapper::toDTO).toList())
+                        .modelWithOutBrandViews(b.getModel().stream()
+                                .map(mapper::toView).toList())
                         .build())
                 .toList();
     }
@@ -106,8 +107,8 @@ public class BrandServiceImpl implements BrandService {
         return brandRepository.findById(id).stream()
                 .map(b -> BrandModelViewModel.builder()
                         .brandDTO(mapper.toDTO(b))
-                        .modelDTOList(b.getModel().stream()
-                                .map(mapper::toDTO)
+                        .modelWithOutBrandViews(b.getModel().stream()
+                                .map(mapper::toView)
                                 .toList())
                         .build())
                 .findFirst().orElseThrow(() -> new NoSuchElementException("No such brand with id " + id));
