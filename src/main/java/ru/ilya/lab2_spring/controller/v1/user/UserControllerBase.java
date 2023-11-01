@@ -9,8 +9,6 @@ import ru.ilya.lab2_spring.dto.UserDTO;
 import ru.ilya.lab2_spring.service.UserService;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import java.time.LocalDateTime;
-
 @Slf4j
 public abstract class UserControllerBase {
     private final UserService userService;
@@ -21,7 +19,6 @@ public abstract class UserControllerBase {
     }
 
     protected ResponseEntity<UserDTO> createUser(UserDTO userDTO) throws IllegalArgumentRequestException {
-        userDTO.setModified(LocalDateTime.now());
         UserDTO user;
         try {
             user = userService.save(userDTO);
@@ -48,7 +45,6 @@ public abstract class UserControllerBase {
     }
 
     protected ResponseEntity<UserDTO> updateUser(UserDTO userDTO) throws IllegalArgumentRequestException {
-        userDTO.setModified(LocalDateTime.now());
         HttpStatus status = userService.findAllByUsername(userDTO.getUsername()).isEmpty() ?
                 HttpStatus.CREATED : HttpStatus.ACCEPTED;
         userService.update(userDTO);

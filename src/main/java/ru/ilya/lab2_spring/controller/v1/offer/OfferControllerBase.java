@@ -11,8 +11,6 @@ import ru.ilya.lab2_spring.dto.OfferDTO;
 import ru.ilya.lab2_spring.service.OfferService;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import java.time.LocalDateTime;
-
 import static ru.ilya.lab2_spring.meter.MeterConstants.OFFERS_TOTAL_COUNT;
 
 @Slf4j
@@ -27,7 +25,6 @@ public abstract class OfferControllerBase {
     }
 
     protected ResponseEntity<OfferDTO> createOffer(OfferDTO offerDTO) throws IllegalArgumentRequestException {
-        offerDTO.setModified(LocalDateTime.now());
         OfferDTO offer;
         try {
             offer = offerService.save(offerDTO);
@@ -47,7 +44,6 @@ public abstract class OfferControllerBase {
     }
 
     protected ResponseEntity<OfferDTO> updateOffer(OfferDTO offerDTO) throws IllegalArgumentRequestException {
-        offerDTO.setModified(LocalDateTime.now());
         HttpStatus status = offerService.existsById(offerDTO.getId()) ? HttpStatus.ACCEPTED : HttpStatus.CREATED;
         offerService.update(offerDTO);
         return ResponseEntity.status(status).body(offerDTO);

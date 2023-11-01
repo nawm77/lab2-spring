@@ -15,6 +15,7 @@ import ru.ilya.lab2_spring.service.ModelService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -84,6 +85,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     private ModelDTO saveOrUpdate(ModelDTO model) throws IllegalArgumentRequestException {
+        model.setModified(LocalDateTime.now());
         BrandDTO brandDTO = model.getBrandDTO();
         try {
             brandDTO = brandService.findAllByName(model.getBrandDTO().getName()).stream().findFirst().get();

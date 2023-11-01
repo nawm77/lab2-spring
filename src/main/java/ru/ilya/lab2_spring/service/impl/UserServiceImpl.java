@@ -14,6 +14,7 @@ import ru.ilya.lab2_spring.service.UserService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -64,6 +65,7 @@ public class UserServiceImpl implements UserService {
 
     private UserDTO saveOrUpdate(UserDTO userDTO) throws EntityExistsException, IllegalArgumentRequestException {
         //todo затестить сохранение с несколькими оффермаи и тд  то есть с вложенными сущностями
+        userDTO.setModified(LocalDateTime.now());
         validationUtil.validateDTO(userDTO);
         try {
             return mapper.toDTO(userRepository.saveAndFlush(mapper.toEntity(userDTO)));

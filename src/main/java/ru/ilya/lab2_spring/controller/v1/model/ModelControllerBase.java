@@ -8,8 +8,6 @@ import ru.ilya.lab2_spring.dto.ModelDTO;
 import ru.ilya.lab2_spring.service.ModelService;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import java.time.LocalDateTime;
-
 @Slf4j
 public abstract class ModelControllerBase {
     private final ModelService modelService;
@@ -19,10 +17,8 @@ public abstract class ModelControllerBase {
     }
 
     protected ResponseEntity<ModelDTO> createModel(ModelDTO modelDTO) throws IllegalArgumentRequestException {
-        modelDTO.setModified(LocalDateTime.now());
-        ModelDTO m;
         try {
-            m = modelService.save(modelDTO);
+            ModelDTO m = modelService.save(modelDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(m);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getLocalizedMessage());
@@ -38,8 +34,8 @@ public abstract class ModelControllerBase {
     }
 
     protected ResponseEntity<ModelDTO> updateModel(ModelDTO modelDTO) throws IllegalArgumentRequestException {
-        modelDTO.setModified(LocalDateTime.now());
-        HttpStatus status = modelService.findAllByName(modelDTO.getName()).isEmpty() ? HttpStatus.CREATED : HttpStatus.ACCEPTED;
+        HttpStatus status = modelService.findAllByName(modelDTO.getName()).isEmpty() ?
+                HttpStatus.CREATED : HttpStatus.ACCEPTED;
         return ResponseEntity.status(status).body(modelService.update(modelDTO));
     }
 

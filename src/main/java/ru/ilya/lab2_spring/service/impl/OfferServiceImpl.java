@@ -13,6 +13,7 @@ import ru.ilya.lab2_spring.service.OfferService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -73,6 +74,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     private OfferDTO saveOrUpdate(OfferDTO offerDTO) throws EntityExistsException, IllegalArgumentRequestException {
+        offerDTO.setModified(LocalDateTime.now());
         validationUtil.validateDTO(offerDTO);
         try {
             return mapper.toDTO(offerRepository.saveAndFlush(mapper.toEntity(offerDTO)));

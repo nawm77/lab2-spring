@@ -14,6 +14,7 @@ import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -111,10 +112,12 @@ public class BrandServiceImpl implements BrandService {
                                 .map(mapper::toView)
                                 .toList())
                         .build())
-                .findFirst().orElseThrow(() -> new NoSuchElementException("No such brand with id " + id));
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("No such brand with id " + id));
     }
 
     private BrandDTO saveOrUpdate(BrandDTO brandDTO) throws EntityExistsException, IllegalArgumentRequestException {
+        brandDTO.setModified(LocalDateTime.now());
         validationUtil.validateDTO(brandDTO);
         try {
             return mapper.toDTO(brandRepository.saveAndFlush(mapper.toEntity(brandDTO)));

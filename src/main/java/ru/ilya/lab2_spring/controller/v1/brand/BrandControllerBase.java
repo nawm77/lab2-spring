@@ -11,8 +11,6 @@ import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import java.time.LocalDateTime;
-
 import static ru.ilya.lab2_spring.meter.MeterConstants.BRANDS_TOTAL_COUNT;
 
 @Slf4j
@@ -27,10 +25,8 @@ public abstract class BrandControllerBase {
     }
 
     protected ResponseEntity<BrandDTO> createBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
-        brandDTO.setModified(LocalDateTime.now());
-        BrandDTO b;
         try {
-            b = brandService.save(brandDTO);
+            BrandDTO b = brandService.save(brandDTO);
             Counter.builder(BRANDS_TOTAL_COUNT).description("Total count of created brands").register(meterRegistry).increment();
             return ResponseEntity.status(HttpStatus.CREATED).body(b);
         } catch (Exception e) {
@@ -56,7 +52,6 @@ public abstract class BrandControllerBase {
     }
 
     protected ResponseEntity<BrandDTO> updateBrand(BrandDTO brandDTO) throws IllegalArgumentRequestException {
-        brandDTO.setModified(LocalDateTime.now());
         HttpStatus status = brandService.findAllByName(brandDTO.getName()).isEmpty() ?
                 HttpStatus.CREATED : HttpStatus.ACCEPTED;
         brandService.update(brandDTO);
