@@ -1,6 +1,7 @@
-package ru.ilya.lab2_spring.controller.v1.model;
+package ru.ilya.lab2_spring.controller.v1.rest.model;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,7 +12,7 @@ import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 @Slf4j
 public abstract class ModelControllerBase {
     private final ModelService modelService;
-
+    @Autowired
     protected ModelControllerBase(ModelService modelService) {
         this.modelService = modelService;
     }

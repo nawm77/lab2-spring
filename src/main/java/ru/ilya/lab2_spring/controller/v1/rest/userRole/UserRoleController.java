@@ -1,4 +1,4 @@
-package ru.ilya.lab2_spring.controller.v1.userRole;
+package ru.ilya.lab2_spring.controller.v1.rest.userRole;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

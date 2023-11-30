@@ -20,6 +20,9 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana_spring
+#    environment:
+#      GF_SECURITY_ADMIN_PASSWORD: lol
+#      GF_SECURITY_ADMIN_USER: lol
     ports:
       - "3000:3000"
     volumes:

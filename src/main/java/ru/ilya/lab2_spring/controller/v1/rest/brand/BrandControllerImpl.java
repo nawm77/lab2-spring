@@ -1,4 +1,4 @@
-package ru.ilya.lab2_spring.controller.v1.brand;
+package ru.ilya.lab2_spring.controller.v1.rest.brand;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;

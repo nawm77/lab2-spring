@@ -1,4 +1,4 @@
-package ru.ilya.lab2_spring.controller.v1.userRole;
+package ru.ilya.lab2_spring.controller.v1.rest.userRole;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +27,11 @@ public class UserRoleControllerImpl extends UserRoleControllerBase implements Us
 
     @Override
     public ResponseEntity<UserRoleDTO> updateUserRole(UserRoleDTO userRoleDTO) throws IllegalArgumentRequestException {
-        return super;
+        return super.updateUserRole(userRoleDTO);
     }
 
     @Override
     public ResponseEntity<?> deleteUserRole(String roleId) {
-        return super;
+        return getUserRole(roleId, true);
     }
 }

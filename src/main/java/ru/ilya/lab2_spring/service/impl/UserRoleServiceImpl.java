@@ -22,15 +22,19 @@ import java.util.NoSuchElementException;
 @Service
 @Slf4j
 public class UserRoleServiceImpl implements UserRoleService {
-    private final UserRoleRepository userRoleRepository;
     private final Mapper mapper;
     private final ValidationUtil validationUtil;
+    private UserRoleRepository userRoleRepository;
 
     @Autowired
-    public UserRoleServiceImpl(UserRoleRepository userRoleRepository, Mapper mapper, ValidationUtil validationUtil) {
-        this.userRoleRepository = userRoleRepository;
+    public UserRoleServiceImpl(Mapper mapper, ValidationUtil validationUtil) {
         this.mapper = mapper;
         this.validationUtil = validationUtil;
+    }
+
+    @Autowired
+    public void setUserRoleRepository(UserRoleRepository userRoleRepository) {
+        this.userRoleRepository = userRoleRepository;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package ru.ilya.lab2_spring.controller.v1.brand;
+package ru.ilya.lab2_spring.controller.v1.rest.brand;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -10,6 +10,9 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.ilya.lab2_spring.dto.BrandDTO;
 import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static ru.ilya.lab2_spring.meter.MeterConstants.BRANDS_TOTAL_COUNT;
 
@@ -43,7 +46,6 @@ public abstract class BrandControllerBase {
             }
         } else {
             if (!withModels) {
-                // почему тут возвращался список
                 return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findById(id));
             } else {
                 return ResponseEntity.status(HttpStatus.FOUND).body(brandService.findByIdWithModel(id));

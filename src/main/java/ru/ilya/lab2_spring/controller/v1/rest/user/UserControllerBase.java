@@ -1,4 +1,4 @@
-package ru.ilya.lab2_spring.controller.v1.user;
+package ru.ilya.lab2_spring.controller.v1.rest.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

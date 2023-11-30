@@ -21,15 +21,19 @@ import java.util.NoSuchElementException;
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
     private final Mapper mapper;
     private final ValidationUtil validationUtil;
+    private UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, Mapper mapper, ValidationUtil validationUtil) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(Mapper mapper, ValidationUtil validationUtil) {
         this.mapper = mapper;
         this.validationUtil = validationUtil;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override

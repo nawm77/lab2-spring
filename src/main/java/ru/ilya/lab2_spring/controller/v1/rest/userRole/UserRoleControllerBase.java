@@ -1,6 +1,7 @@
-package ru.ilya.lab2_spring.controller.v1.userRole;
+package ru.ilya.lab2_spring.controller.v1.rest.userRole;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,7 +13,7 @@ import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 @Slf4j
 public abstract class UserRoleControllerBase {
     private final UserRoleService userRoleService;
-
+    @Autowired
     protected UserRoleControllerBase(UserRoleService userRoleService) {
         this.userRoleService = userRoleService;
     }
@@ -44,6 +45,9 @@ public abstract class UserRoleControllerBase {
     }
 
     protected ResponseEntity<UserRoleDTO> updateUserRole(UserRoleDTO userRoleDTO) throws IllegalArgumentRequestException {
-        HttpStatus status = userRoleService.findByRole(Role.fromCode(userRoleDTO.))
+        // todo доделать реализацию получения статуса  ?вынести в сервис поиск существующих ролей?
+        // todo подумать над отображением роли  на данный момент есть подозрение, что возвращаются числа
+//        HttpStatus status = userRoleService.findByRole(Role.fromCode(userRoleDTO.))
+        return ResponseEntity.ok(userRoleDTO);
     }
 }

@@ -20,20 +20,24 @@ import java.util.NoSuchElementException;
 @Service
 @Slf4j
 public class OfferServiceImpl implements OfferService {
-    private final OfferRepository offerRepository;
     private final Mapper mapper;
     private final ValidationUtil validationUtil;
+    private OfferRepository offerRepository;
 
     @Autowired
-    public OfferServiceImpl(OfferRepository offerRepository, Mapper mapper, ValidationUtil validationUtil) {
-        this.offerRepository = offerRepository;
+    public OfferServiceImpl(Mapper mapper, ValidationUtil validationUtil) {
         this.mapper = mapper;
         this.validationUtil = validationUtil;
     }
 
+    @Autowired
+    public void setOfferRepository(OfferRepository offerRepository) {
+        this.offerRepository = offerRepository;
+    }
+
     @Override
     public OfferDTO findById(String id) {
-        return mapper.toDTO(offerRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No such offer with id" + id)));
+        return mapper.toDTO(offerRepository.findById(id).orElseThrow(() -> new NoSuchElementException(String.format("No such offer with id: %d", id))));
     }
 
     @Override

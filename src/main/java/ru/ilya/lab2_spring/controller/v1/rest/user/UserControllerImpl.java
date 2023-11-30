@@ -1,4 +1,4 @@
-package ru.ilya.lab2_spring.controller.v1.user;
+package ru.ilya.lab2_spring.controller.v1.rest.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

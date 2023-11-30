@@ -9,6 +9,14 @@ public class ApiConstants {
     public static final String OFFER_PATH = "/offer";
     public static final String USER_PATH = "/user";
     public static final String USER_ROLE_PATH = "/role";
+    public static final String ADMIN_PATH = "/admin";
+    public static final String CREATE_PATH = "/create";
+    public static final String DELETE_PATH = "/delete";
+    public static final String ALL_PATH = "/all";
+    public static final String EDIT_PATH = "/edit";
+    public static final String SPLIT_PATH = "/";
+    public static final String REDIRECT_PATH = "redirect:";
+
 
     //Services APIs
     public static final String BRAND_API_V1_PATH = API_V1_PATH + BRAND_PATH;
