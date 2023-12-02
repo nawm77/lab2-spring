@@ -6,4 +6,5 @@ FROM bellsoft/liberica-openjdk-alpine-musl
 WORKDIR /app
 COPY --from=builder /build/target/springlab.jar .
 RUN apk update && apk upgrade
+RUN apk add curl
 CMD java -jar springlab.jar
