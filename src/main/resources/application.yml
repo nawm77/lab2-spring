@@ -1,4 +1,8 @@
 thread-pool-size: 4
+logging:
+  level:
+    org.thymeleaf: ERROR
+
 server:
   port: 8080
 spring:

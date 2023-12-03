@@ -9,6 +9,8 @@ services:
       POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: root
       POSTGRES_DB: cardb
+    volumes:
+      - pg_data:/var/lib/postgresql/data
     networks:
       local:
   prometheus:
@@ -38,7 +40,7 @@ services:
   service:
     build:
       context: .
-    image: lab2spring:0.2.7
+    image: lab2spring:0.2.8
     container_name: service-backend
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
@@ -54,6 +56,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: root
       SPRING_DATASOURCE_URL: jdbc:postgresql://cardb:5432/cardb
+      LOGGING_LEVEL_ORG.THYMELEAF: ERROR
     networks:
       local:
 
@@ -108,4 +111,6 @@ networks:
     driver: bridge
 volumes:
   elastic_lab2:
+    driver: local
+  pg_data:
     driver: local
