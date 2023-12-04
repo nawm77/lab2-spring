@@ -16,6 +16,10 @@ public class ApiConstants {
     public static final String EDIT_PATH = "/edit";
     public static final String SPLIT_PATH = "/";
     public static final String REDIRECT_PATH = "redirect:";
+    public static final String AUTH_PATH = "/auth";
+    public static final String LOGIN_PATH = "/login";
+    public static final String LOGOUT_PATH = "/logout";
+    public static final String REGISTER_PATH = "/register";
 
 
     //Services APIs

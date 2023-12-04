@@ -1,4 +1,4 @@
-thread-pool-size: 4
+thread.pool.size: 4
 logging:
   level:
     org.thymeleaf: ERROR

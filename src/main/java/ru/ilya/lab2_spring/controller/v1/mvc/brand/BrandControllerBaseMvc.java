@@ -2,7 +2,6 @@ package ru.ilya.lab2_spring.controller.v1.mvc.brand;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -58,6 +57,11 @@ public class BrandControllerBaseMvc {
             return MessageFormat.format("{0}{1}{2}", REDIRECT_PATH, BRAND_PATH, CREATE_PATH);
         }
         return MessageFormat.format("{0}{1}{2}", REDIRECT_PATH, BRAND_PATH, ALL_PATH);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = EDIT_PATH)
+    public String updateBrand(Model model) {
+        return "index";
     }
 
     private Boolean extractRole(HttpServletRequest request) {

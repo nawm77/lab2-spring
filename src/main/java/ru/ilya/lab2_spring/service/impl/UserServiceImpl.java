@@ -4,16 +4,20 @@ import jakarta.persistence.EntityExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.ilya.lab2_spring.dto.UserDTO;
 import ru.ilya.lab2_spring.mapper.Mapper;
+import ru.ilya.lab2_spring.model.enums.Role;
 import ru.ilya.lab2_spring.model.viewModel.UserOfferViewModel;
 import ru.ilya.lab2_spring.repository.UserRepository;
+import ru.ilya.lab2_spring.service.UserRoleService;
 import ru.ilya.lab2_spring.service.UserService;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,11 +28,15 @@ public class UserServiceImpl implements UserService {
     private final Mapper mapper;
     private final ValidationUtil validationUtil;
     private UserRepository userRepository;
+    private final UserRoleService userRoleService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(Mapper mapper, ValidationUtil validationUtil) {
+    public UserServiceImpl(Mapper mapper, ValidationUtil validationUtil, UserRoleService userRoleService, PasswordEncoder passwordEncoder) {
         this.mapper = mapper;
         this.validationUtil = validationUtil;
+        this.userRoleService = userRoleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Autowired
@@ -106,6 +114,20 @@ public class UserServiceImpl implements UserService {
                                 .toList())
                         .build())
                 .findFirst().orElseThrow(() -> new NoSuchElementException("No such user with id " + userId));
+    }
+
+    @Override
+    public UserDTO registerNewUser(UserDTO userDTO) throws IllegalArgumentRequestException {
+        if(userRepository.findAllByUsername(userDTO.getUsername()).isEmpty()) {
+            userDTO.setUserRoleDTO(userRoleService.findByRole(Role.USER));
+            userDTO.setCreated(LocalDateTime.now());
+            userDTO.setIsActive(true);
+            userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            log.info("Save new user with username: {}", userDTO.getUsername());
+            return saveOrUpdate(userDTO);
+        } else {
+            throw new EntityExistsException(MessageFormat.format("User with username {0} already exists", userDTO.getUsername()));
+        }
     }
 
     @Override
