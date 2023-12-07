@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/head"/>
 <body class="d-flex flex-column h-100">
 <div th:replace="fragments/navbar">Navbar</div>
@@ -10,6 +11,8 @@
       <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
         <div class="justify-content-center">
           <h1>Welcome to auto market application!</h1>
+          <a sec:authentication="!isAuthenticated()" class="btn-block" th:href="@{/auth/login}">Log in</a>
+          <a sec:authentication="!isAuthenticated()" class="btn-block" th:href="@{/auth/registration}">Registration</a>
         </div>
         <div><span th:text="'Last update of Database:'"></span>&nbsp;
           <span th:text="${#dates.createNow()}"></span>

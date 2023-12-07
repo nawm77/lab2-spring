@@ -77,9 +77,10 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public BrandDTO update(BrandDTO brandDTO) throws IllegalArgumentRequestException {
-        if (brandRepository.findById(brandDTO.getId()).isPresent()) {
-            log.info("Update brand {}", brandDTO);
-        }
+        BrandDTO exists = findById(brandDTO.getId());
+        brandDTO.setCreated(exists.getCreated());
+        brandDTO.setModified(LocalDateTime.now());
+        log.info("Update brand {} to {}", exists, brandDTO);
         return saveOrUpdate(brandDTO);
     }
 

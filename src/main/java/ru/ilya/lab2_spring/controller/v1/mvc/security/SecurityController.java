@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.ilya.lab2_spring.dto.UserDTO;
 import ru.ilya.lab2_spring.service.UserService;
-import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.text.MessageFormat;
 
@@ -40,10 +39,6 @@ public class SecurityController {
         return "loginPage";
     }
 
-    //    @GetMapping("/success")
-//    public String getSuccessPage(){
-//        return "success";
-//    }
     @RequestMapping(value = LOGOUT_PATH, method = RequestMethod.POST)
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
@@ -57,7 +52,7 @@ public class SecurityController {
     }
 
     @RequestMapping(value = REGISTER_PATH, method = RequestMethod.POST)
-    public String registerUser(@Valid UserDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws IllegalArgumentRequestException {
+    public String registerUser(@Valid UserDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("user", userDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", bindingResult);
@@ -67,7 +62,7 @@ public class SecurityController {
             userService.registerNewUser(userDTO);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Ошибка! Пользователь уже сущетсвует");
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.brandModel",
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user",
                     bindingResult);
             return MessageFormat.format("{0}{1}{2}", REDIRECT_PATH, AUTH_PATH, REGISTER_PATH);
         }

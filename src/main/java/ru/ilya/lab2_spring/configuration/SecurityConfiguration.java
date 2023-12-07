@@ -24,7 +24,7 @@ public class SecurityConfiguration {
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**", "/brand/**", "/", "/model/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasAuthority("admin:write")
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .anyRequest().authenticated())
                 .formLogin()
