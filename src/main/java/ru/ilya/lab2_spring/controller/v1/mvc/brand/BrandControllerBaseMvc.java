@@ -21,7 +21,7 @@ public class BrandControllerBaseMvc {
      * todo:
      *  get done
      *  post done
-     *  put
+     *  put done
      *  delete
      * */
     private final BrandService brandService;

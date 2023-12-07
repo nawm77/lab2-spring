@@ -11,8 +11,11 @@
       <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
         <div class="justify-content-center">
           <h1>Welcome to auto market application!</h1>
-          <a sec:authentication="!isAuthenticated()" class="btn-block" th:href="@{/auth/login}">Log in</a>
-          <a sec:authentication="!isAuthenticated()" class="btn-block" th:href="@{/auth/registration}">Registration</a>
+          <a sec:authorize="!isAuthenticated()" class="btn-block" th:href="@{/auth/login}">Log in</a>
+          <a sec:authorize="!isAuthenticated()" class="btn-block" th:href="@{/auth/registration}">Registration</a>
+          <form sec:authorize="isAuthenticated()" th:action="@{/auth/logout}" th:method="post">
+            <button type="submit" class="btn btn-secondary">Logout</button>
+          </form>
         </div>
         <div><span th:text="'Last update of Database:'"></span>&nbsp;
           <span th:text="${#dates.createNow()}"></span>
