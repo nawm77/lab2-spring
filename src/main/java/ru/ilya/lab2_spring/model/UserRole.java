@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import ru.ilya.lab2_spring.converter.RoleConverter;
+//import ru.ilya.lab2_spring.converter.RoleConverter;
 import ru.ilya.lab2_spring.model.enums.Role;
 
 import java.util.Set;
@@ -16,7 +16,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRole extends BaseEntity {
-    @Convert(converter = RoleConverter.class)
+//    @Convert(converter = RoleConverter.class)
+    @Enumerated(value = EnumType.STRING)
     @Column
     private Role role;
 

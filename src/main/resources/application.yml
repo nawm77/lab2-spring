@@ -34,3 +34,6 @@ management:
     metrics:
       export:
         enabled: true
+redis:
+  host: localhost
+  port: 6379

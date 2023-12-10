@@ -3,6 +3,7 @@ package ru.ilya.lab2_spring.controller.v1.mvc.security;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import static ru.ilya.lab2_spring.model.api.ApiConstants.*;
 
 @Controller
 @RequestMapping(AUTH_PATH)
+@Slf4j
 public class SecurityController {
     private final UserService userService;
 
@@ -56,14 +58,17 @@ public class SecurityController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("user", userDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", bindingResult);
+            log.info("Error during registration process. Validation rules failed for user {}", userDTO.getUsername());
             return MessageFormat.format("{0}{1}{2}", REDIRECT_PATH, AUTH_PATH, REGISTER_PATH);
         }
         try {
             userService.registerNewUser(userDTO);
+            log.info("Registered new user {}", userDTO.getUsername());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Ошибка! Пользователь уже сущетсвует");
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user",
                     bindingResult);
+            log.info("User with username: {} already exists", userDTO.getUsername());
             return MessageFormat.format("{0}{1}{2}", REDIRECT_PATH, AUTH_PATH, REGISTER_PATH);
         }
         return REDIRECT_PATH+SPLIT_PATH;

@@ -9,29 +9,29 @@ import java.util.stream.Collectors;
 
 @Getter
 public enum Role {
-    USER(1, Set.of(Permission.USER_WRITE, Permission.USER_WATCH)),
-    SELLER(20, Set.of(Permission.SELLER_WRITE, Permission.SELLER_WATCH,
+    USER("USER", Set.of(Permission.USER_WRITE, Permission.USER_WATCH)),
+    SELLER("SELLER", Set.of(Permission.SELLER_WRITE, Permission.SELLER_WATCH,
             Permission.USER_WRITE, Permission.USER_WATCH)),
-    ADMIN(10, Set.of(Permission.ADMIN_WRITE, Permission.ADMIN_WATCH,
+    ADMIN("ADMIN", Set.of(Permission.ADMIN_WRITE, Permission.ADMIN_WATCH,
             Permission.SELLER_WRITE, Permission.SELLER_WATCH,
             Permission.USER_WRITE, Permission.USER_WATCH));
 
-    final int code;
+    final String name;
     final Set<Permission> permissions;
 
-    Role(int code, Set<Permission> permissions) {
-        this.code = code;
+    Role(String name, Set<Permission> permissions) {
+        this.name = name;
         this.permissions = permissions;
     }
 
-    public static Role fromCode(int code) {
-        for (Role role : values()) {
-            if (role.code == code) {
-                return role;
-            }
-        }
-        throw new IllegalArgumentException("No such role with code: " + code);
-    }
+//    public static Role fromCode(int code) {
+//        for (Role role : values()) {
+//            if (role.name == code) {
+//                return role;
+//            }
+//        }
+//        throw new IllegalArgumentException("No such role with code: " + code);
+//    }
 
     public Set<SimpleGrantedAuthority> getAuthorities(){
         return getPermissions().stream()
