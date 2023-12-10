@@ -12,7 +12,7 @@
           <h1>Edit brand</h1>
         </div>
         <form th:object="${brandModel}"
-              th:action="@{/brand/edit/{id}(id=${brandModel.getId()})}"
+              th:action="@{/admin/brand/edit/{id}(id=${brandModel.getId()})}"
               th:method="post"
               class="m-md-auto w-50 pb-3">
           <div class="mb-3">

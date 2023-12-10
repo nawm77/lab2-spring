@@ -4,6 +4,7 @@ import jakarta.persistence.EntityExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.ilya.lab2_spring.dto.OfferDTO;
@@ -14,6 +15,7 @@ import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -37,7 +39,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public OfferDTO findById(String id) {
-        return mapper.toDTO(offerRepository.findById(id).orElseThrow(() -> new NoSuchElementException(String.format("No such offer with id: %d", id))));
+        return mapper.toDTO(offerRepository.findById(id).orElseThrow(() -> new NoSuchElementException(String.format("No such offer with id: %s", id))));
     }
 
     @Override
@@ -71,10 +73,11 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
+    @PostFilter("filterObject.userDTO.username eq principal.username or principal.authorities.contains('admin:read')")
     public List<OfferDTO> findAll() {
-        return offerRepository.findAll().stream()
+        return new ArrayList<>(offerRepository.findAll().stream()
                 .map(mapper::toDTO)
-                .toList();
+                .toList());
     }
 
     private OfferDTO saveOrUpdate(OfferDTO offerDTO) throws EntityExistsException, IllegalArgumentRequestException {

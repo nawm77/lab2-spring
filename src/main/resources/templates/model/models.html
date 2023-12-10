@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head"/>
+<body class="d-flex flex-column h-100">
+<div th:replace="fragments/navbar">Navbar</div>
+<main class="flex-shrink-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="jumbotron text-center rounded col-md-8 align-self-center pt-5">
+        <h2 class="text-center text-dark mt-5">All models</h2>
+        <div th:each="b : ${models}" class="d-flex flex-column bg-text mb-3">
+          <h2 th:text="'Brand: ' + ${b.getName()}"></h2>
+          <h2 th:text="'Category: ' + ${b.getCategory()}"></h2>
+          <h2 th:text="'Start year: ' + ${b.getStartYear()}"></h2>
+          <h2 th:text="'End year: ' + ${b.getEndYear()}"></h2>
+          <h2 th:text="'Created: ' + ${b.getCreated()}"></h2>
+          <h2 th:text="'Modified: ' + ${b.getModified()}"></h2>
+          <h4><a class="btn-block" sec:authorize="hasAuthority('admin:write')" th:href="@{/admin/model/edit/{id}(id=${b.getId()})}">Edit model</a></h4>
+        </div>
+        <h4><a class="btn-block" sec:authorize="hasAuthority('admin:write')" th:href="@{/admin/model/create}">Add model</a></h4>
+      </div>
+    </div>
+  </div>
+</main>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>
