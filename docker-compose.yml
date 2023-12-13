@@ -51,6 +51,8 @@ services:
     depends_on:
       - cardb
       - prometheus
+      - redis
+      - logstash
     ports:
       - "8080:8080"
     environment:
