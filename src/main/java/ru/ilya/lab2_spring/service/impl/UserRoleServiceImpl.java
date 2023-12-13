@@ -109,7 +109,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     private UserRoleDTO saveOrUpdate(UserRoleDTO userRoleDTO) throws IllegalArgumentRequestException {
-        userRoleDTO.setModified(LocalDateTime.now());
+        userRoleDTO.setModified(LocalDateTime.now().toString());
         validationUtil.validateDTO(userRoleDTO);
         try {
             return mapper.toDTO(userRoleRepository.saveAndFlush(mapper.toEntity(userRoleDTO)));

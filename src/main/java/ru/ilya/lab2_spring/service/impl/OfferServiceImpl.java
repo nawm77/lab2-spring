@@ -81,7 +81,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     private OfferDTO saveOrUpdate(OfferDTO offerDTO) throws EntityExistsException, IllegalArgumentRequestException {
-        offerDTO.setModified(LocalDateTime.now());
+        offerDTO.setModified(LocalDateTime.now().toString());
         validationUtil.validateDTO(offerDTO);
         try {
             return mapper.toDTO(offerRepository.saveAndFlush(mapper.toEntity(offerDTO)));

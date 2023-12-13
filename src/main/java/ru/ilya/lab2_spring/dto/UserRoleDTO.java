@@ -18,6 +18,6 @@ public class UserRoleDTO {
     @NotNull
     @NotEmpty
     private String role;
-    private LocalDateTime created;
-    private LocalDateTime modified;
+    private String created;
+    private String modified;
 }

@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
     private UserDTO saveOrUpdate(UserDTO userDTO) throws EntityExistsException, IllegalArgumentRequestException {
         //todo затестить сохранение с несколькими оффермаи и тд  то есть с вложенными сущностями
-        userDTO.setModified(LocalDateTime.now());
+        userDTO.setModified(LocalDateTime.now().toString());
         validationUtil.validateDTO(userDTO);
         try {
             return mapper.toDTO(userRepository.saveAndFlush(mapper.toEntity(userDTO)));
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO registerNewUser(UserDTO userDTO) throws IllegalArgumentRequestException {
         if(userRepository.findAllByUsername(userDTO.getUsername()).isEmpty()) {
             userDTO.setUserRoleDTO(userRoleService.findByRole(Role.USER));
-            userDTO.setCreated(LocalDateTime.now());
+            userDTO.setCreated(LocalDateTime.now().toString());
             userDTO.setIsActive(true);
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             log.info("Save new user with username: {}", userDTO.getUsername());

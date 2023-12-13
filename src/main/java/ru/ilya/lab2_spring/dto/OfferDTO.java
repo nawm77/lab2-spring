@@ -31,8 +31,8 @@ public class OfferDTO {
     @NotEmpty
     @Min(value = 1800, message = "Year must be more than 1800")
     private Integer year;
-    private LocalDateTime created;
-    private LocalDateTime modified;
+    private String created;
+    private String modified;
     @NotNull
     @NotEmpty
     private ModelDTO modelDTO;

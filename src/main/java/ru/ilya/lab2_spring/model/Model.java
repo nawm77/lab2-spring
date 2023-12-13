@@ -20,9 +20,7 @@ public class Model extends BaseEntity {
     private Category category;
     @Column(nullable = false, unique = true)
     private String name;
-    @Column(nullable = false, unique = true)
     private String imageUrl;
-    @Column(nullable = false)
     private Integer startYear;
     private Integer endYear;
 
