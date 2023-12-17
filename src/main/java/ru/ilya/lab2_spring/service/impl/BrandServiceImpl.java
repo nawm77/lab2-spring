@@ -5,7 +5,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static ru.ilya.lab2_spring.service.util.Constants.REDIS_BRANDS_AND_MODELS_CACHE_NAME;
 import static ru.ilya.lab2_spring.service.util.Constants.REDIS_BRANDS_CACHE_NAME;
 
 @Service
@@ -64,9 +62,8 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-//    @Cacheable(key = "#id", value = REDIS_BRANDS_CACHE_NAME)
+    @Cacheable(key = "#id", value = REDIS_BRANDS_CACHE_NAME)
     public BrandDTO findById(String id) {
-        System.out.println(id);
         return mapper.toDTO(brandRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No such brand with id " + id)));
     }
@@ -80,7 +77,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    @CacheEvict(key = "#id", value = REDIS_BRANDS_CACHE_NAME)
+//    @CacheEvict(key = "#id", value = REDIS_BRANDS_CACHE_NAME)
     public void deleteById(String id) {
         try {
             brandRepository.deleteById(id);
@@ -92,14 +89,15 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     @Transactional
-    @CacheEvict(key = "#brandDTO.id", value = REDIS_BRANDS_CACHE_NAME)
-    @CachePut(key = "#brandDTO.id", value = REDIS_BRANDS_CACHE_NAME)
+//    @CachePut(key = "#brandDTO.id", value = REDIS_BRANDS_CACHE_NAME)
     public BrandDTO update(BrandDTO brandDTO) throws IllegalArgumentRequestException {
         BrandDTO exists = findById(brandDTO.getId());
+        exists.setModified(LocalDateTime.now().toString());
+        exists.setName(brandDTO.getName());
         brandDTO.setCreated(exists.getCreated());
         brandDTO.setModified(LocalDateTime.now().toString());
         log.info("Update brand {} to {}", exists, brandDTO);
-        return saveOrUpdate(brandDTO);
+        return saveOrUpdate(exists);
     }
 
     @Override

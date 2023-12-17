@@ -12,8 +12,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 import java.time.Duration;
 
-import static ru.ilya.lab2_spring.service.util.Constants.REDIS_BRANDS_CACHE_NAME;
-import static ru.ilya.lab2_spring.service.util.Constants.REDIS_MODELS_CACHE_NAME;
+import static ru.ilya.lab2_spring.service.util.Constants.*;
 
 @Configuration
 public class RedisConfig {
@@ -25,7 +24,6 @@ public class RedisConfig {
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(redisHost, redisPort);
-
         return new LettuceConnectionFactory(configuration);
     }
 
@@ -37,6 +35,7 @@ public class RedisConfig {
                 .cacheDefaults(cacheConfig)
                 .withCacheConfiguration(REDIS_BRANDS_CACHE_NAME, myDefaultCacheConfig(Duration.ofMinutes(10)))
                 .withCacheConfiguration(REDIS_MODELS_CACHE_NAME, myDefaultCacheConfig(Duration.ofMinutes(10)))
+                .withCacheConfiguration(REDIS_ALL_BRANDS_CACHE_NAME, myDefaultCacheConfig(Duration.ofMinutes(10)))
                 .build();
     }
 
