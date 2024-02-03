@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-ui-deployment
+  labels:
+    kind: monitoring
+    type: deployment
+spec:
+  selector:
+    matchLabels:
+      app: carService
+      type: grafana-ui
+  template:
+    metadata:
+      labels:
+        app: carService
+        type: grafana-ui
+    spec:
+      containers:
+        - name: grafana-ui
+          image: grafana/grafana
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+              name: grafana-main
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: admin
+            - name: GF_SECURITY_ADMIN_USER
+              value: admin
+  replicas: 1
+  minReadySeconds: 20
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+

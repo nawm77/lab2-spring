@@ -27,12 +27,12 @@ public class ModelControllerBaseMvc {
     @RequestMapping(value = ALL_PATH, method = RequestMethod.GET)
     public String getAllModels(Model model) {
         model.addAttribute("models", modelService.findAll());
-        return "model/models";
+        return "models";
     }
 
     @RequestMapping(value = EDIT_PATH, method = RequestMethod.GET)
     public String editModel() {
-        return "model/model-edit";
+        return "model-edit";
     }
 
 //    @RequestMapping(value = EDIT_PATH, method = RequestMethod.GET)

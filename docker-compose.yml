@@ -41,7 +41,7 @@ services:
   service:
     build:
       context: .
-    image: lab2spring:0.2.8
+    image: lab2spring:0.3.0
     container_name: service-backend
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
@@ -122,3 +122,4 @@ volumes:
     driver: local
   pg_data:
     driver: local
+

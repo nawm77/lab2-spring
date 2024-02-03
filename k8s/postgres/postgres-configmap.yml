@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+data:
+  DB_NAME: "cardb"
+  DB_USER: "postgres"
+  DB_PASSWORD: "root"
+  DB_PORT: "5432"

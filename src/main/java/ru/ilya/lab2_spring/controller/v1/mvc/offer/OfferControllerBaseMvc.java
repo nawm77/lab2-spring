@@ -18,6 +18,6 @@ public class OfferControllerBaseMvc {
     @RequestMapping(ALL_PATH)
     public String getAllOffers(Model model) {
         model.addAttribute("offers", offerService.findAll());
-        return "offer/offers";
+        return "offers";
     }
 }

@@ -1,7 +1,12 @@
 package ru.ilya.lab2_spring.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,6 +17,7 @@ import ru.ilya.lab2_spring.model.Model;
 import ru.ilya.lab2_spring.repository.ModelRepository;
 import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.service.ModelService;
+import ru.ilya.lab2_spring.service.util.Constants;
 import ru.ilya.lab2_spring.service.util.ValidationUtil;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
@@ -19,8 +25,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static ru.ilya.lab2_spring.service.util.Constants.REDIS_MODELS_CACHE_NAME;
+
 @Service
 @Slf4j
+@EnableCaching
 public class ModelServiceImpl implements ModelService {
     private ModelRepository modelRepository;
     private final Mapper mapper;
@@ -40,12 +49,14 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
+    @Cacheable(key = "#id", value = REDIS_MODELS_CACHE_NAME)
     public ModelDTO findById(String id) {
         return mapper.toDTO(modelRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No such model with id" + id)));
     }
 
     @Override
+    @CacheEvict(key = "#id", value = REDIS_MODELS_CACHE_NAME)
     public void deleteById(String id) {
         try {
             modelRepository.deleteById(id);
@@ -56,6 +67,8 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
+    @Transactional
+    @CachePut(key = "#model.id", value = REDIS_MODELS_CACHE_NAME)
     public ModelDTO update(ModelDTO model) throws IllegalArgumentRequestException {
         if (!modelRepository.findAllByName(model.getName()).isEmpty()) {
             log.info("Update model {}", model);
@@ -78,6 +91,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
+//    @Cacheable(value = REDIS_MODELS_CACHE_NAME, key = "#model.name")
     public ModelDTO save(ModelDTO model) throws IllegalArgumentRequestException {
         ModelDTO modelDTO = saveOrUpdate(model);
         log.info("Create model {} with id {} and name {}", modelDTO, modelDTO.getId(), modelDTO.getName());
@@ -85,7 +99,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     private ModelDTO saveOrUpdate(ModelDTO model) throws IllegalArgumentRequestException {
-        model.setModified(LocalDateTime.now());
+        model.setModified(LocalDateTime.now().toString());
         BrandDTO brandDTO = model.getBrandDTO();
         try {
             brandDTO = brandService.findAllByName(model.getBrandDTO().getName()).stream().findFirst().get();

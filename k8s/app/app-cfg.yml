@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  labels:
+    app: spring2lab
+    type: cfg
+data:
+  SPRING_DATASOURCE_USERNAME: "postgres"
+  SPRING_DATASOURCE_PASSWORD: "root"
+  SPRING_DATASOURCE_URL: "jdbc:postgres-service:5432/cardb"

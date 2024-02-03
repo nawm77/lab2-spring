@@ -14,7 +14,7 @@
         <div class="row bg-light rounded">
           <div class="col-md-6 pt-3">
             <h2>Brand</h2>
-            <h4 th:text="'Name: ' + ${brand.getBrandDTO().getName()}"></h4>
+            <h4 th:text="'Name: ' + ${brand.getBrandDTO().name}"></h4>
             <div th:each="m : ${brand.getModelWithOutBrandViews()}" class="d-flex flex-column bg-text mb-3">
               <h4 th:text="'Model name: ' + ${m.getName()}"></h4>
               <h4 th:text="'Category: ' + ${m.getCategory()}"></h4>

@@ -8,18 +8,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class BrandDTO {
+@AllArgsConstructor
+public class BrandDTO implements Serializable {
     private String id;
     @NotNull
     @NotEmpty
     @Length(min = 2, message = "Brand name must contains minimum two characters")
     private String name;
-    private LocalDateTime created;
-    private LocalDateTime modified;
+    private String created;
+    private String modified;
 }

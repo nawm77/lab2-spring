@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-deployment
+  labels:
+    app: prometheus-server
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: prometheus-server
+  template:
+    metadata:
+      labels:
+        app: prometheus-server
+    spec:
+      containers:
+        - name: prometheus
+          imagePullPolicy: IfNotPresent
+          image: prom/prometheus
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - mountPath: /etc/prometheus/
+              name: prometheus-cfg-volume
+            - mountPath: /prometheus/
+              name: prometheus-storage-volume
+      volumes:
+        - name: prometheus-cfg-volume
+          configMap:
+            name: prometheus-server-cfg
+            defaultMode: 420
+        - name: prometheus-storage-volume
+          emptyDir: {}

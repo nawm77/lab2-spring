@@ -12,9 +12,10 @@
           <h1>Edit brand</h1>
         </div>
         <form th:object="${brandModel}"
-              th:action="@{/admin/brand/edit/{id}(id=${brandModel.getId()})}"
+              th:action="@{/admin/brand/edit/{id}(id=${brandModel.id})}"
               th:method="post"
               class="m-md-auto w-50 pb-3">
+          <div th:text="${brandModel.id}">id</div>
           <div class="mb-3">
             <label class="form-label" for="name">Name</label>
             <input th:field="*{name}"

@@ -1,6 +1,9 @@
 package ru.ilya.lab2_spring.controller.v1.mvc.brand;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +20,7 @@ import static ru.ilya.lab2_spring.model.api.ApiConstants.*;
 
 @Controller
 @RequestMapping(value = ADMIN_PATH+BRAND_PATH)
+@Slf4j
 public class AdminBrandControllerMVC extends BrandControllerBaseMvc {
     private final BrandService brandService;
     public AdminBrandControllerMVC(BrandService brandService, BrandService brandService1) {
@@ -25,13 +29,14 @@ public class AdminBrandControllerMVC extends BrandControllerBaseMvc {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = EDIT_PATH+SPLIT_PATH+"{id}")
-    public String updateBrand(@PathVariable String id, Model model) {
+    public String updateBrand(@PathVariable("id") String id, Model model) {
+        System.out.println(id);
         model.addAttribute("brandModel",brandService.findById(id));
         return "brands-update";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = EDIT_PATH+SPLIT_PATH+"{id}")
-    public String sendUpdate(@Valid BrandDTO brandDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String sendUpdate(@Valid BrandDTO brandDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails userDetails) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("brandModel", brandDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.brandModel",
@@ -40,6 +45,7 @@ public class AdminBrandControllerMVC extends BrandControllerBaseMvc {
         }
         try {
             brandService.update(brandDTO);
+            log.info("User with username {} successfully edited brand to {}", userDetails.getUsername(), brandDTO);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Ошибка создания бренда. Бренд уже существует");
             redirectAttributes.addFlashAttribute("brandModel", brandDTO);
@@ -54,7 +60,7 @@ public class AdminBrandControllerMVC extends BrandControllerBaseMvc {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = CREATE_PATH)
-    protected String addBrand(@Valid BrandDTO brandDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    protected String addBrand(@Valid BrandDTO brandDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails userDetails) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("brandModel", brandDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.brandModel",
@@ -63,6 +69,7 @@ public class AdminBrandControllerMVC extends BrandControllerBaseMvc {
         }
         try {
             brandService.save(brandDTO);
+            log.info("User with username {} saved new brand {}", userDetails.getUsername(), brandDTO.getName());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Ошибка создания бренда. Бренд уже существует");
             redirectAttributes.addFlashAttribute("brandModel", brandDTO);
