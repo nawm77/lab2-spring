@@ -36,7 +36,7 @@ public class AdminBrandControllerMVC extends BrandControllerBaseMvc {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = EDIT_PATH+SPLIT_PATH+"{id}")
-    public String sendUpdate(@Valid BrandDTO brandDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String sendUpdate(@Valid BrandDTO brandDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails userDetails) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("brandModel", brandDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.brandModel",
@@ -44,8 +44,8 @@ public class AdminBrandControllerMVC extends BrandControllerBaseMvc {
             return MessageFormat.format("{0}{1}{2}", REDIRECT_PATH, BRAND_PATH, EDIT_PATH);
         }
         try {
-            System.out.println("ID dto " + brandDTO.getId());
             brandService.update(brandDTO);
+            log.info("User with username {} successfully edited brand to {}", userDetails.getUsername(), brandDTO);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Ошибка создания бренда. Бренд уже существует");
             redirectAttributes.addFlashAttribute("brandModel", brandDTO);

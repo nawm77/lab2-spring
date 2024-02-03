@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spring_lab2
+    type: app
+spec:
+  selector:
+    matchLabels:
+      app: spring_lab2
+      type: app
+  template:
+    metadata:
+      name: spring-backend
+      labels:
+        app: spring_lab2
+        type: app
+    spec:
+      containers:
+        - name: backend
+          imagePullPolicy: IfNotPresent
+          image: lab2spring:0.3.0
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+              name: backend-main
+          env:
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                - configMapKeyRef:
+                    name: backend-config
+                    key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                - configMapKeyRef:
+                    name: backend-config
+                    key: SPRING_DATASOURCE_PASSWORD
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                - configMapKeyRef:
+                    name: backend-config
+                    key: SPRING_DATASOURCE_URL
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+    type: RollingUpdate

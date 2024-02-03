@@ -15,7 +15,6 @@ import ru.ilya.lab2_spring.service.BrandService;
 import ru.ilya.lab2_spring.service.ModelService;
 import ru.ilya.lab2_spring.util.exception.IllegalArgumentRequestException;
 
-import java.text.MessageFormat;
 import java.util.Arrays;
 
 import static ru.ilya.lab2_spring.model.api.ApiConstants.*;

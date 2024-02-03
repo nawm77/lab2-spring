@@ -26,18 +26,16 @@ public class SecurityConfiguration {
                         .requestMatchers("/auth/**", "/brand/**", "/", "/model/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("admin:write")
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated())
-                .formLogin()
-                .loginPage("/auth/login")
-                .defaultSuccessUrl("/", true)
-                .permitAll()
-                .and()
-                .logout()
-                .logoutUrl("/auth/logout")
-                .logoutSuccessUrl("/")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .permitAll();
+                .formLogin(login -> login.loginPage("/auth/login")
+                        .defaultSuccessUrl("/", true)
+                        .permitAll())
+                .logout(logout -> logout.logoutUrl("/auth/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll());
         return http.build();
     }
 }

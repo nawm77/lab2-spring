@@ -45,7 +45,6 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public List<BrandDTO> findAll() {
-        //TODO возможное решение - использовать класс - обертку, в котором будет 1 поле - лист ДТО. Тогда можно будет десериализовать массив в поле и отдать лист ДТО
         return brandRepository.findAll().stream()
                 .map(mapper::toDTO)
                 .toList();
