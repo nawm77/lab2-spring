@@ -15,4 +15,4 @@ data:
         scrape_interval: 5s
         metrics_path: '/actuator/prometheus'
         static_configs:
-          - targets: [ 'app-svc:8080' ]
+          - targets: [ 'app-svc:80' ]

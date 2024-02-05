@@ -8,8 +8,7 @@ metadata:
     kind: svc
 spec:
   selector:
-    app: prometheus
-    type: app
+    app: prometheus-server
   ports:
     - port: 9090
       targetPort: 9090

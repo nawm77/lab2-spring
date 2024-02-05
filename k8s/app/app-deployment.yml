@@ -1,19 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: spring-app
   labels:
-    app: spring_lab2
+    app: spring-lab2
     type: app
 spec:
   selector:
     matchLabels:
-      app: spring_lab2
+      app: spring-lab2
       type: app
   template:
     metadata:
       name: spring-backend
       labels:
-        app: spring_lab2
+        app: spring-lab2
         type: app
     spec:
       containers:
@@ -27,17 +28,17 @@ spec:
           env:
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
-                - configMapKeyRef:
+                configMapKeyRef:
                     name: backend-config
                     key: SPRING_DATASOURCE_USERNAME
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
-                - configMapKeyRef:
+                configMapKeyRef:
                     name: backend-config
                     key: SPRING_DATASOURCE_PASSWORD
             - name: SPRING_DATASOURCE_URL
               valueFrom:
-                - configMapKeyRef:
+                configMapKeyRef:
                     name: backend-config
                     key: SPRING_DATASOURCE_URL
           readinessProbe:

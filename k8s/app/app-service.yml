@@ -3,15 +3,16 @@ kind: Service
 metadata:
   name: app-svc
   labels:
-    app: spring_lab2
+    app: spring-lab2
     type: app
     kind: svc
 spec:
   selector:
-    app: spring_lab2
+    app: spring-lab2
     type: app
   ports:
     - port: 80
       targetPort: 8080
       name: backend-port
-  type: ClusterIP
+      nodePort: 32003
+  type: NodePort

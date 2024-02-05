@@ -21,6 +21,8 @@ spec:
     spec:
       containers:
         - name: prometheus
+          securityContext:
+            runAsUser: 0
           imagePullPolicy: IfNotPresent
           image: prom/prometheus
           ports:
